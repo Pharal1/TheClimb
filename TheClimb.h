@@ -4,5 +4,6 @@
 #pragma once
 
 #include <iostream>
+#include "src/core/Game.h"
 
 // TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
