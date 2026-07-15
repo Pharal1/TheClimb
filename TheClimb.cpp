@@ -13,7 +13,6 @@ const char* PlayerTexture = "resources/player1.png";
 const float playerVelocity = 18.0f;
 const float cellSize = 3.0f;
 
-
 /*
 '0' = floor
 '1' = wall

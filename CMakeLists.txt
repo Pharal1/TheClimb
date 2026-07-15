@@ -17,6 +17,12 @@ add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManage
 find_package(raylib CONFIG REQUIRED)
 target_link_libraries(TheClimb PRIVATE raylib)
 
+add_custom_command(TARGET TheClimb POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/src/resources
+    $<TARGET_FILE_DIR:TheClimb>/resources
+)
+
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET TheClimb PROPERTY CXX_STANDARD 20)
 endif()

@@ -1,7 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/dev/cpp/raylib/TheClimb/build/cmake_install.cmake"
-	],
-	"Parallel" : false
-}

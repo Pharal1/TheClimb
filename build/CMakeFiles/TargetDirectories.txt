@@ -1,3 +1,0 @@
-C:/dev/cpp/raylib/TheClimb/build/CMakeFiles/TheClimb.dir
-C:/dev/cpp/raylib/TheClimb/build/CMakeFiles/edit_cache.dir
-C:/dev/cpp/raylib/TheClimb/build/CMakeFiles/rebuild_cache.dir

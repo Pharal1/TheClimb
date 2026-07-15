@@ -431,3 +431,5 @@ FodyWeavers.xsd
 
 dev.md
 devlog.md
+
+build/*
