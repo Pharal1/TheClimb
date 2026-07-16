@@ -74,7 +74,7 @@ int main(void)
 	//initilisation
 	Game game(screenW, screenH, targetFps, cameraZoom);
 	Map map(test_map);
-	Player player(1, 1, playerVelocity, cellSize);
+	Player player(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 	player.setMap(&map);
 	game.Init(&player, &map);
 	initTileSet();

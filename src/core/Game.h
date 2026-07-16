@@ -18,6 +18,7 @@ public:
 	int getH() const { return screenH_; }
 	Map* getMap() const { return map_; }
 	Camera2D getCamera() const { return camera_; }
+	TextureManager& getTextureManager() { return textureManager_; }
 private:
 	Map* map_ = nullptr;
 	Player* player_ = nullptr;

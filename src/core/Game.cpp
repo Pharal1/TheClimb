@@ -30,7 +30,6 @@ void Game::Init(Player* player, Map* map) {
 
 	//textureManager_.load("tileset1", "resources/tileset1.png");
 
-	player_->Load(textureManager_);
 	map_->Load(textureManager_);
 }
 

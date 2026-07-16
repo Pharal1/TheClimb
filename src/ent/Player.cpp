@@ -1,12 +1,8 @@
 // Player.cpp
 #include "Player.h"
 
-Player::Player(int posXTile, int posYTile, float velocity, float size) : posXTile_(posXTile), posYTile_(posYTile), velocity_(velocity), size_(size), targetTileX_(posXTile), targetTileY_(posYTile) {
-	posX_ = posXTile_ * size + size / 2; //posX_ - size / 2 = posXTile_ * size
-	posY_ = posYTile_ * size + size / 2;
-	
-	
-	
+Player::Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) 
+	: Unit(posXTile, posYTile, velocity, size, manager, textureID, texturePath) {
 }
 
 void Player::Update(float dt, Vector2 dm, bool isRunning) {
@@ -75,7 +71,7 @@ void Player::Update(float dt, Vector2 dm, bool isRunning) {
 		}
 	}
 	*/
-	const float tileSize = map_->getTileSize();
+	const float tileSize = getMap()->getTileSize();
 	if (!isMoving_)
 	{
 		int nextX = posXTile_;
@@ -86,7 +82,7 @@ void Player::Update(float dt, Vector2 dm, bool isRunning) {
 		else if (dm.y != 0)
 			nextY += (int)dm.y;
 		else return;
-		if (map_->isFree(nextX, nextY))
+		if (getMap()->isFree(nextX, nextY))
 		{
 			targetTileX_ = nextX;
 			targetTileY_ = nextY;
@@ -119,27 +115,14 @@ void Player::Render() {
 	float posY = posY_;
 	float size = size_;
 
-	textureDest = { posX, posY - (float)texture_.width / 2, (float)texture_.width, (float)texture_.height };
-	DrawTexturePro(texture_, textureSource, textureDest, textureOrigin, 0.0f, WHITE);
+	textureDest_ = { posX, posY - (float)texture_.width / 2, (float)texture_.width, (float)texture_.height };
+	DrawTexturePro(texture_, textureSource_, textureDest_, textureOrigin_, 0.0f, WHITE);
 	//DrawTexture(texture_, 0, 0, WHITE);
 	//std::cout << "Player::Render() called" << std::endl;
 }
 
-void Player::setPosTile(int x, int y) {
-	if (map_ == nullptr) return;
-	if (!map_->isFree(x, y)) {
-		return;
-	}
-	
-	posXTile_ = x;
-	posYTile_ = y;
-
-	posX_ = posXTile_ * size_ + size_ / 2;
-	posY_ = posYTile_ * size_ + size_ / 2;
-}
-
 void Player::setPosTileX(int x) {
-	if (map_ == nullptr) return;
+	if (getMap() == nullptr) return;
 	/*if (x > map_->getSizeX()) {
 		std::cout << "setPosTileX() out of array range" << std::endl;
 		return;
@@ -150,7 +133,7 @@ void Player::setPosTileX(int x) {
 	posX_ = posXTile_ * size_ + size_ / 2;
 }
 void Player::setPosTileY(int y) {
-	if (map_ == nullptr) return;
+	if (getMap() == nullptr) return;
 	/*if (y > map_->getSizeY()) {
 		std::cout << "setPosTileY() out of array range" << std::endl;
 		return;
@@ -159,14 +142,4 @@ void Player::setPosTileY(int y) {
 	posYTile_ = y;
 
 	posY_ = posYTile_ * size_ + size_ / 2;
-}
-
-void Player::Load(TextureManager textureManager) {
-	textureManager.load("player1", "resources/player3.png");
-	texture_ = textureManager.get("player1");
-	std::cout << "Player::Load() passed" << std::endl;
-
-	textureSource = { 0.0f, 0.0f, (float)texture_.width, (float)texture_.height };
-	textureDest = { posX_, posY_, size_, size_ };
-	textureOrigin = { size_ / 2.0f, size_ };
 }
