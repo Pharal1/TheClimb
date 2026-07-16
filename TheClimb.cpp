@@ -7,11 +7,11 @@ const int screenW = 1280;
 const int screenH = 720;
 const int targetFps = 144;
 
-float cameraZoom = 16.0f;
+float cameraZoom = 6.0f;
 
 const char* PlayerTexture = "resources/player1.png";
-const float playerVelocity = 18.0f;
-const float cellSize = 3.0f;
+const float playerVelocity = 32.0f;
+const float cellSize = 16.0f;
 
 /*
 '0' = floor
@@ -56,17 +56,29 @@ const std::vector<std::string> map3{
 	"2222222222222222222222222222"
 };
 
-MapData test_map(map3, 3);
+const std::vector<std::string> map3m{
+	"1111111111111111111111111111",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001",
+	"1000000000000000000000000001"
+};
+
+MapData test_map(map3m, cellSize);
 
 int main(void)
 {
 	//initilisation
 	Game game(screenW, screenH, targetFps, cameraZoom);
 	Map map(test_map);
-	Player player(1, 1, PlayerTexture, playerVelocity, cellSize);
+	Player player(1, 1, playerVelocity, cellSize);
 	player.setMap(&map);
 	game.Init(&player, &map);
 	initTileSet();
+	//Texture2D textr = LoadTexture("resources/player3.png");
 	//Texture2D textr1 = LoadTexture(PlayerTexture);
 
 	//loop
@@ -77,17 +89,18 @@ int main(void)
 		BeginDrawing();
 		BeginMode2D(game.getCamera());
 		ClearBackground(RAYWHITE);
+		
 		//DrawTexture(textr1, 0, 0, WHITE);
 		DrawRectangle(0, 0, 4, 4, RED);
-		map.Render();
-		player.Render();
-
+		game.Render();
+		//DrawTexture(textr, 0, 0, WHITE);
 		EndMode2D();
 		EndDrawing();
 	}
 	//UnloadTexture(textr1);
-
+	game.Unload();
 	CloseWindow();
+
 
 	return 0;
 }

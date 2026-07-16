@@ -33,15 +33,39 @@ void Map::Render() {
 	const int tileSize = mapData_.cellSize_;
 	const auto& map = mapData_.map_;
 	const Color linesColor = WHITE;
-	Color color = WHITE;
+	//Color color = WHITE;
 	
 	//render tiles
 	
 	for (int y = 0; y < map.size(); y++) {
 		for (int x = 0; x < map[y].size(); x++) {
-			color = tileSet[map[y][x]].color;
+			//color = tileSet[map[y][x]].color;
 
-			DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, color);
+			//DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, color);
+
+			Rectangle src{
+				tileSet[map[y][x]].index * tileSize,
+				0.0f,
+				tileSize,
+				tileSize
+			};
+			Rectangle dst{
+				x * tileSize,
+				y * tileSize,
+				tileSize,
+				tileSize
+			};
+			DrawTexturePro(
+				tileset_,
+				src,
+				dst,
+				{0, 0},
+				0.0f,
+				WHITE 
+			);
+
+
+			
 		}
 	}
 
@@ -62,6 +86,11 @@ bool Map::isFree(int x, int y) {
 	}
 	if (isCellFree(map_[y][x])) return true;
 	return false;
+}
+
+void Map::Load(TextureManager textureManager) {
+	textureManager.load("tileset1", "resources/tileset1.png");
+	tileset_ = textureManager.get("tileset1");
 }
 
 bool isCellFree(TileType tileType) {

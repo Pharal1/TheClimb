@@ -12,7 +12,7 @@ endif()
 project ("TheClimb")
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp")
+add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp" "src/manager/TextureManager.cpp")
 
 find_package(raylib CONFIG REQUIRED)
 target_link_libraries(TheClimb PRIVATE raylib)

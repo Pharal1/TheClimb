@@ -6,14 +6,15 @@
 #include "math.h"
 #include "../world/Map.h"
 #include <iostream>
+#include "../manager/TextureManager.h"
 
 class Player {
 public:
-	Player(int posXTile, int posYTile, const char* texturePath, float velocity, float size);
-	~Player();
+	Player(int posXTile, int posYTile, float velocity, float size);
 	void setMap(Map* map) { map_ = map; }
 	void Update(float dt, Vector2 dm, bool isRunning);
 	void Render();
+	void Load(TextureManager textureManager);
 	Texture2D getTexture() const { return texture_; }
 	float getPosX() const { return posX_; }
 	float getPosY() const { return posY_; }
@@ -33,7 +34,7 @@ private:
 	int dirY_ = 0;
 
 	bool isMoving_ = false;
-	Texture2D texture_;
+	Texture2D texture_{};
 	float velocity_;
 	float velocityRunningMultiplier = 1.5f;
 	//float velocity_diag;

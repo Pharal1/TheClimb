@@ -23,6 +23,15 @@ void Game::Init(Player* player, Map* map) {
 
 
 	camera_ = camera;
+	TextureManager textureManager;
+	textureManager_ = textureManager;
+
+	//texture load:
+
+	//textureManager_.load("tileset1", "resources/tileset1.png");
+
+	player_->Load(textureManager_);
+	map_->Load(textureManager_);
 }
 
 void Game::Update(float dt) {
@@ -39,4 +48,12 @@ void Game::Update(float dt) {
 	player_->Update(dt, deltaPlayer, isRunning);
 	camera_.target = { player_->getPosX(), player_->getPosY() };
 	camera_.zoom = cameraZoom_;
+}
+
+void Game::Render() {
+	map_->Render();
+	player_->Render();
+}
+void Game::Unload() {
+	textureManager_.unloadAll();
 }

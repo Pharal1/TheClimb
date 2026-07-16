@@ -5,5 +5,6 @@
 
 #include <iostream>
 #include "src/core/Game.h"
+#include "raylib.h"
 
 // TODO: установите здесь ссылки на дополнительные заголовки, требующиеся для программы.
