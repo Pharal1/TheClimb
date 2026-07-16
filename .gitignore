@@ -433,3 +433,5 @@ dev.md
 devlog.md
 
 build/*
+
+vcpkg_installed/*
