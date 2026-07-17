@@ -77,6 +77,10 @@ int main(void)
 	Player player(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 	player.setMap(&map);
 	game.Init(&player, &map);
+
+	Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
+	game.addNpc(&npc1);
+
 	initTileSet();
 	//Texture2D textr = LoadTexture("resources/player3.png");
 	//Texture2D textr1 = LoadTexture(PlayerTexture);

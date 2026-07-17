@@ -8,8 +8,9 @@ Game::Game(int screenW, int screenH, int fps, float zoom) : screenW_(screenW), s
 }
 
 void Game::Init(Player* player, Map* map) {
-	player_ = player;
 	map_ = map;
+	player_ = player;
+	player_->setNpcList(npc_);
 	
 	//player_->setMap(map_);
 
@@ -33,10 +34,25 @@ void Game::Init(Player* player, Map* map) {
 	map_->Load(textureManager_);
 }
 
+void Game::tryInterract() {
+	if (player_->isMoving()) return;
+	for (Npc* npc : npc_) {
+		if (npc->isInterractable()) {
+			if (npc->getPosXTile() == player_->getPosXTile() + player_->getDirX() && 
+				npc->getPosYTile() == player_->getPosYTile() + player_->getDirY()) 
+			{
+				std::cout << "Ping\n";
+				npc->interract();
+			}	
+		}
+	}
+}
+
 void Game::Update(float dt) {
 
 	Vector2 deltaPlayer = { 0, 0 };
 	bool isRunning = false;
+	bool isEPressed = false;
 	if (IsKeyDown(KEY_D)) deltaPlayer.x++;
 	if (IsKeyDown(KEY_A)) deltaPlayer.x--;
 	if (IsKeyDown(KEY_W)) deltaPlayer.y--;
@@ -44,7 +60,16 @@ void Game::Update(float dt) {
 
 	if (IsKeyDown(KEY_LEFT_SHIFT)) isRunning = true;
 
-	player_->Update(dt, deltaPlayer, isRunning);
+	if (IsKeyPressed(KEY_E)) {
+		tryInterract();
+	}
+	player_->Input(deltaPlayer, isRunning, isEPressed);
+	player_->Update(dt);
+	
+	for (auto* i : npc_) {
+		if (i != nullptr) i->Update(dt);
+	}
+
 	camera_.target = { player_->getPosX(), player_->getPosY() };
 	camera_.zoom = cameraZoom_;
 }
@@ -52,7 +77,28 @@ void Game::Update(float dt) {
 void Game::Render() {
 	map_->Render();
 	player_->Render();
+
+	for (auto* i : npc_) {
+		if (i != nullptr) i->Render();
+	}
 }
 void Game::Unload() {
 	textureManager_.unloadAll();
+}
+
+void Game::addNpc(Npc* npc) {
+	if (npc == nullptr) return;
+	npc_.push_back(npc);
+	npc->setMap(map_);
+	player_->setNpcList(npc_);
+}
+
+bool Game::isTileFree(int x, int y) const {
+	if (!map_->isFree(x, y)) return false;
+
+	for (Npc* npc : npc_) {
+		if (npc->getPosXTile() == x || npc->getPosYTile() == y) return false;
+	}
+
+	return true;
 }

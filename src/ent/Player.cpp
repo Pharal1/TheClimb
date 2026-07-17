@@ -1,97 +1,59 @@
 // Player.cpp
 #include "Player.h"
 
+
 Player::Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) 
 	: Unit(posXTile, posYTile, velocity, size, manager, textureID, texturePath) {
 }
 
-void Player::Update(float dt, Vector2 dm, bool isRunning) {
-	//std::cout << "Player::Update() is called\n";
-	/*
-	Player::Update(float dt, Vector2 dm, bool isRunning)
+void Player::Input(Vector2 dm, bool isRunning, bool isEPressed) {
+	dm_ = dm;
+	isRunning_ = isRunning;
+	isEPressed_ = isEPressed;
 
-	float mlpr = 1.0f;
-	float vel_diag_m = 0.7f;
-	if (isRunning) mlpr = velocityRunningMultiplier;
+	//std::cout << npc_ << std::endl;
+}
 
-	if (!isMovingX_ && dm.x != 0) {
-		if (map_->isFree(targetTileX_ + dm.x, posYTile_))
-		{
-			targetTileX_ += dm.x;
-
-			dirX_ = dm.x;
-			isMovingX_ = true;
-
-			//std::cout << targetTileX_ << dm.x << map_->isFree(targetTileX_ + dm.x, posYTile_) << std::endl;
-		}
-		else {
-			targetTileX_ = posXTile_;
-			//std::cout << targetTileX_ << std::endl;
-		}
-	}
-	if (!isMovingY_ && dm.y != 0) {
-		if (map_->isFree(posXTile_, targetTileY_ + dm.y)) {
-			targetTileY_ += dm.y;
-
-			dirY_ = dm.y;
-			isMovingY_ = true;
-		}
-		else {
-			targetTileY_ = posYTile_;
-		}
-	}
-	if (isMovingX_) {
-		if ((targetTileX_ * size_ + size_ / 2) - posX_ < 0.5f && (targetTileX_ * size_ + size_ / 2) - posX_ > -0.5f) {
-			setPosTileX(targetTileX_);
-			isMovingX_ = false;
-			dirX_ = 0;
-		}
-		else {
-			if (!isMovingY_) {
-				posX_ += dirX_ * dt * velocity_ * mlpr;
-			}
-			else {
-				posX_ += dirX_ * dt * velocity_ * vel_diag_m * mlpr;
-			}
-		}
-	}
-	if (isMovingY_) {
-		if ((targetTileY_ * size_ + size_ / 2) - posY_ < 0.5f && (targetTileY_ * size_ + size_ / 2) - posY_ > -0.5f) {
-			setPosTileY(targetTileY_);
-			isMovingY_ = false;
-			dirY_ = 0;
-		}
-		else {
-			if (!isMovingX_) {
-				posY_ += dirY_ * dt * velocity_ * mlpr;
-			}
-			else {
-				posY_ += dirY_ * dt * velocity_ * vel_diag_m * mlpr;
-			}
-		}
-	}
-	*/
+void Player::Update(float dt) {
 	const float tileSize = getMap()->getTileSize();
+
+	float multiplier = 1.0f;
+	if (isRunning_) multiplier *= velocityRunningMultiplier_;
+
+	
+
 	if (!isMoving_)
 	{
+
+
+
 		int nextX = posXTile_;
 		int nextY = posYTile_;
 		//std::cout << "1" << std::endl;
-		if (dm.x != 0)
-			nextX += (int)dm.x;
-		else if (dm.y != 0)
-			nextY += (int)dm.y;
-		else return;
-		if (getMap()->isFree(nextX, nextY))
-		{
-			targetTileX_ = nextX;
-			targetTileY_ = nextY;
+		if (dm_.x != 0)
+			nextX += (int)dm_.x;
+		else if (dm_.y != 0)
+			nextY += (int)dm_.y;
+		else {
 
-			dirX_ = (float)(nextX - posXTile_);
-			dirY_ = (float)(nextY - posYTile_);
+			if (isEPressed_) std::cout << "E PRESSED!" << std::endl;
 
-			isMoving_ = true;
+			return;
 		}
+
+		dirX_ = (float)(nextX - posXTile_);
+		dirY_ = (float)(nextY - posYTile_);
+
+		if (!getMap()->isFree(nextX, nextY)) return;
+		for (Npc* npc : npc_) {
+			if (npc->getPosXTile() == nextX && npc->getPosYTile() == nextY) return;
+		}
+		targetTileX_ = nextX;
+		targetTileY_ = nextY;
+
+		
+
+		isMoving_ = true;
 	}
 	else {
 		//std::cout << "exp: " << (fabs(targetTileX_ * size_ - posX_) <= velocity_ * dt) << std::endl;
@@ -121,25 +83,4 @@ void Player::Render() {
 	//std::cout << "Player::Render() called" << std::endl;
 }
 
-void Player::setPosTileX(int x) {
-	if (getMap() == nullptr) return;
-	/*if (x > map_->getSizeX()) {
-		std::cout << "setPosTileX() out of array range" << std::endl;
-		return;
-	}
-	*/
-	posXTile_ = x;
 
-	posX_ = posXTile_ * size_ + size_ / 2;
-}
-void Player::setPosTileY(int y) {
-	if (getMap() == nullptr) return;
-	/*if (y > map_->getSizeY()) {
-		std::cout << "setPosTileY() out of array range" << std::endl;
-		return;
-	}
-	*/
-	posYTile_ = y;
-
-	posY_ = posYTile_ * size_ + size_ / 2;
-}

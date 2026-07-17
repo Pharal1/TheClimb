@@ -25,3 +25,30 @@ void Unit::setPosTile(int x, int y) {
 	posX_ = posXTile_ * size_ + size_ / 2;
 	posY_ = posYTile_ * size_ + size_ / 2;
 }
+
+void Unit::setPosTileX(int x) {
+	if (getMap() == nullptr) return;
+	/*if (x > map_->getSizeX()) {
+		std::cout << "setPosTileX() out of array range" << std::endl;
+		return;
+	}
+	*/
+	posXTile_ = x;
+
+	posX_ = posXTile_ * size_ + size_ / 2;
+}
+void Unit::setPosTileY(int y) {
+	if (getMap() == nullptr) return;
+	/*if (y > map_->getSizeY()) {
+		std::cout << "setPosTileY() out of array range" << std::endl;
+		return;
+	}
+	*/
+	posYTile_ = y;
+
+	posY_ = posYTile_ * size_ + size_ / 2;
+}
+
+void Unit::interract() {
+
+}

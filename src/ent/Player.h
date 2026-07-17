@@ -4,24 +4,30 @@
 
 
 #include "Unit.h"
+#include "Npc.h"
 
 class Player : public Unit {
 public:
 	Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath);
 
 	void Render() override;
-	void Update(float dt, Vector2 dm, bool isRunning) override;
+	void Update(float dt) override;
+	void Input(Vector2 deltaMove, bool isRunning, bool isEPressed);
 	//void Load(TextureManager& textureManager) override;
 
-	void setRunningMultiplier(float value) { velocityRunningMultiplier = value; }
+	void setRunningMultiplier(float value) { velocityRunningMultiplier_ = value; }
+	void setNpcList(std::vector<Npc*> list) { npc_ = list; }
+
 	//void setPosTile(int x, int y); // NO ISFREE() CHECK
-	void setPosTileX(int x);
-	void setPosTileY(int y);
+	
 private:
 
+	std::vector<Npc*> npc_ = { nullptr };
 	
-	
-	float velocityRunningMultiplier = 1.5f;
+	float velocityRunningMultiplier_ = 1.5f;
+
+	bool isRunning_ = false;
+	bool isEPressed_ = false;
 	//float velocity_diag;
 	
 

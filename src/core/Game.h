@@ -3,14 +3,17 @@
 
 #include "raylib.h"
 #include "../ent/Player.h"
+#include "../ent/Npc.h"
 #include "../world/Map.h"
 #include "../manager/TextureManager.h"
+
 
 class Game {
 public:
 	Game(int screenW, int screenH, int fps, float zoom);
 	
 	void Init(Player* player, Map* map);
+	void addNpc(Npc* npc);
 	void Update(float dt);
 	void Render(/*TextureManager textureManager*/);
 	void Unload();
@@ -19,11 +22,16 @@ public:
 	Map* getMap() const { return map_; }
 	Camera2D getCamera() const { return camera_; }
 	TextureManager& getTextureManager() { return textureManager_; }
+
+	bool isTileFree(int x, int y) const;
 private:
 	Map* map_ = nullptr;
 	Player* player_ = nullptr;
 	Camera2D camera_{};
 	TextureManager textureManager_{};
+	std::vector<Npc*> npc_;
+
+	void tryInterract();
 
 	const int screenW_;
 	const int screenH_;
