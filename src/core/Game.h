@@ -6,6 +6,7 @@
 #include "../ent/Npc.h"
 #include "../world/Map.h"
 #include "../manager/TextureManager.h"
+#include "../manager/dialogue/DialogueManager.h"
 
 
 class Game {
@@ -22,16 +23,21 @@ public:
 	Map* getMap() const { return map_; }
 	Camera2D getCamera() const { return camera_; }
 	TextureManager& getTextureManager() { return textureManager_; }
+	DialogueManager& getDialogueManager() { return dialogueManager_; }
 
 	bool isTileFree(int x, int y) const;
+
+	
 private:
 	Map* map_ = nullptr;
 	Player* player_ = nullptr;
 	Camera2D camera_{};
 	TextureManager textureManager_{};
+	DialogueManager dialogueManager_{};
 	std::vector<Npc*> npc_;
 
 	void tryInterract();
+	void handleInput();
 
 	const int screenW_;
 	const int screenH_;

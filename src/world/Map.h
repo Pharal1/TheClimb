@@ -32,7 +32,7 @@ class Map {
 public:
 	Map(MapData mapData);
 	void Render();
-	void Load(TextureManager textureManager);
+	void Load(TextureManager* textureManager);
 	bool isFree(int x, int y);
 	int getTileSize() const { return mapData_.cellSize_; }
 private:

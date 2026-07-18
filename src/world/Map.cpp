@@ -88,9 +88,9 @@ bool Map::isFree(int x, int y) {
 	return false;
 }
 
-void Map::Load(TextureManager textureManager) {
-	textureManager.load("tileset1", "resources/tileset1.png");
-	tileset_ = textureManager.get("tileset1");
+void Map::Load(TextureManager* textureManager) {
+	textureManager->load("tileset1", "resources/tileset1.png");
+	tileset_ = textureManager->get("tileset1");
 }
 
 bool isCellFree(TileType tileType) {

@@ -4,6 +4,8 @@
 #define NPC_H_
 
 #include "Unit.h"
+#include "../manager/dialogue/Dialogue.h"
+
 class Npc : public Unit {
 public:
 	Npc(
@@ -21,9 +23,14 @@ public:
 
 	bool isInterractable() const { return isInterractable_; }
 
+	Dialogue* getDialogue() { return &dialogue_; }
+	void setDialogue(Dialogue dialogue) { dialogue_ = dialogue; }
+
 	void interract() override;
 private:
 	bool isInterractable_;
+
+	Dialogue dialogue_{};
 	//bool isTalking_;
 
 

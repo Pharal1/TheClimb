@@ -79,6 +79,7 @@ int main(void)
 	game.Init(&player, &map);
 
 	Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
+	npc1.setDialogue({ "zxcursed", {"im zxcuesed", "coil coil coil"} });
 	game.addNpc(&npc1);
 
 	initTileSet();
@@ -91,6 +92,7 @@ int main(void)
 
 		game.Update(dt);
 		BeginDrawing();
+
 		BeginMode2D(game.getCamera());
 		ClearBackground(RAYWHITE);
 		
@@ -99,6 +101,9 @@ int main(void)
 		game.Render();
 		//DrawTexture(textr, 0, 0, WHITE);
 		EndMode2D();
+
+		game.getDialogueManager().Render();
+
 		EndDrawing();
 	}
 	//UnloadTexture(textr1);

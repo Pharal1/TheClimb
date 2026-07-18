@@ -27,11 +27,14 @@ void Game::Init(Player* player, Map* map) {
 	TextureManager textureManager;
 	textureManager_ = textureManager;
 
+	DialogueManager dialogueManager;
+	dialogueManager_ = dialogueManager;
+
 	//texture load:
 
 	//textureManager_.load("tileset1", "resources/tileset1.png");
 
-	map_->Load(textureManager_);
+	map_->Load(&textureManager_);
 }
 
 void Game::tryInterract() {
@@ -43,16 +46,18 @@ void Game::tryInterract() {
 			{
 				std::cout << "Ping\n";
 				npc->interract();
+
+				dialogueManager_.startDialogue(npc->getDialogue());
 			}	
 		}
 	}
 }
 
-void Game::Update(float dt) {
-
+void Game::handleInput() {
 	Vector2 deltaPlayer = { 0, 0 };
 	bool isRunning = false;
 	bool isEPressed = false;
+	bool skip = false;
 	if (IsKeyDown(KEY_D)) deltaPlayer.x++;
 	if (IsKeyDown(KEY_A)) deltaPlayer.x--;
 	if (IsKeyDown(KEY_W)) deltaPlayer.y--;
@@ -63,11 +68,26 @@ void Game::Update(float dt) {
 	if (IsKeyPressed(KEY_E)) {
 		tryInterract();
 	}
+	if (IsKeyPressed(KEY_SPACE)) {
+		skip = true;
+	}
+
+	dialogueManager_.skip(skip);
 	player_->Input(deltaPlayer, isRunning, isEPressed);
-	player_->Update(dt);
-	
+}
+
+void Game::Update(float dt) {
+
+	handleInput();
+
 	for (auto* i : npc_) {
 		if (i != nullptr) i->Update(dt);
+	}
+
+	if (!dialogueManager_.isActive()) {
+		player_->Update(dt);
+	} else {
+		dialogueManager_.Update(dt);
 	}
 
 	camera_.target = { player_->getPosX(), player_->getPosY() };

@@ -75,3 +75,4 @@ void Npc::Update(float dt) {
 void Npc::interract() {
 	std::cout << "Pong!" << std::endl;
 }
+
