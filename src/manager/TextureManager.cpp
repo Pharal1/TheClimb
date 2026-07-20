@@ -3,7 +3,7 @@
 #include "TextureManager.h"
 
 void TextureManager::load(const std::string& id, const std::string& path) {
-	Texture2D texture = LoadTexture(path.c_str());
+	Texture2D texture = LoadTexture(path.c_str()); // <-here
 	SetTextureFilter(texture, TEXTURE_FILTER_POINT);
 	textures_[id] = texture;
 }

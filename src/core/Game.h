@@ -7,6 +7,7 @@
 #include "../world/Map.h"
 #include "../manager/TextureManager.h"
 #include "../manager/dialogue/DialogueManager.h"
+#include <memory>
 
 
 class Game {
@@ -33,7 +34,8 @@ private:
 	Player* player_ = nullptr;
 	Camera2D camera_{};
 	TextureManager textureManager_{};
-	DialogueManager dialogueManager_{};
+
+	DialogueManager dialogueManager_;
 	std::vector<Npc*> npc_;
 
 	void tryInterract();

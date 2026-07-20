@@ -102,7 +102,7 @@ int main(void)
 		//DrawTexture(textr, 0, 0, WHITE);
 		EndMode2D();
 
-		game.getDialogueManager().Render();
+		game.getDialogueManager().Render(screenW, screenH);
 
 		EndDrawing();
 	}

@@ -4,17 +4,22 @@
 #define DIALOGUE_MANAGER_H_
 
 #include "Dialogue.h"
-#include "string"
+#include <string>
+#include "raylib.h"
+#include "../TextureManager.h"
+
+#include <iostream>
 
 class DialogueManager {
 public:
-	//DialogueManager();
+	//DialogueManager(TextureManager* textureManager);
 
 	void startDialogue(Dialogue* dialogue);
 	void skip(bool skip) { skip_ = skip; }
-	bool isActive() { return isActive_; }
+	bool isActive() const { return isActive_; }
 	void Update(float dt);
-	void Render();
+	void Render(int screenW, int screenH) const;
+	void Load(TextureManager& textureManager);
 private:
 	bool isActive_ = false;
 	bool skip_ = false;
@@ -22,6 +27,8 @@ private:
 	int currentLine_ = 0;
 
 	Dialogue* currentDialogue_{};
+	Texture* texture_border_{};
+	Texture* texture_box_{};
 };
 
 #endif
