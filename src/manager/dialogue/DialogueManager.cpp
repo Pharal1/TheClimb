@@ -2,6 +2,10 @@
 
 #include "DialogueManager.h"
 
+DialogueManager::DialogueManager(int screenW, int screenH) : screenW_(screenW), screenH_(screenH) {
+
+}
+
 void DialogueManager::startDialogue(Dialogue* dialogue) {
 	if (dialogue == nullptr) return;
 	currentDialogue_ = dialogue;
@@ -169,15 +173,15 @@ static void DrawNineSlice(Texture2D& texture, Rectangle dest,int sourceBorder, i
 	);
 }
 
-void DialogueManager::Render(int screenW, int screenH) const {
+void DialogueManager::Render() const {
 	if (!isActive_) return;
 	const int screenBorderSize = 9;
 	Rectangle dialogueBox =
 	{
-		screenW / 20,
-		screenH*2/3,
-		screenW - screenW / 20 * 2,
-		screenH/3 - screenH / 100
+		screenW_ / 20,
+		screenH_ *2/3,
+		screenW_ - screenW_ / 20 * 2,
+		screenH_ /3 - screenH_ / 100
 	};
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);

@@ -2,49 +2,31 @@
 
 #include "Map.h"
 
-Map::Map(MapData mapData) : mapData_(mapData) {
-	const auto& map = mapData.map_;
-	int maxXN;
-	maxY_ = map.size();
+//Map::Map(TextureManager& textureManager) : textureManager_(textureManager) {}
+Map::Map() {}
 
-	for (int i = 0; i < maxY_; i++) {
-		map_.push_back(std::vector<TileType>{});
-	}
 
-	for (int y = 0; y < map.size(); y++) {
-		maxXN = 0;
-		for (int x = 0; x < map[y].size(); x++) {
-			maxXN += 1;
-			switch (map[y][x]) {
-			case '0':
-				map_[y].push_back(TileType::eFloor);
-				break;
-			case '1':
-			case '2':
-				map_[y].push_back(TileType::eWall);
-				break;
-			}
-		}
-		if (maxXN > maxX_) maxX_ = maxXN;
-	}
+void Map::Load(std::string path, TextureManager& textureManager) {
+	std::ifstream file(path);
+	json data;
+	file >> data;
+
+	x_ = data["width"];
+	y_ = data["height"];
+
+	textureManager.load(data["tileset"], data["tileset_path"]);
+	tileSet_ = data["tileset"];
+
+	ground_ = data["ground"].get<std::vector<std::string>>();
+
 }
 
-void Map::Render() {
-	const int tileSize = mapData_.cellSize_;
-	const auto& map = mapData_.map_;
-	const Color linesColor = WHITE;
-	//Color color = WHITE;
-	
-	//render tiles
-	
-	for (int y = 0; y < map.size(); y++) {
-		for (int x = 0; x < map[y].size(); x++) {
-			//color = tileSet[map[y][x]].color;
-
-			//DrawRectangle(x * tileSize, y * tileSize, tileSize, tileSize, color);
-
+void Map::RenderGround(TextureManager& textureManager) const {
+	int tileSize = TheClimb::kTileSize;
+	for (int y = 0; y < y_; ++y) {
+		for (int x = 0; x < x_; ++x) {
 			Rectangle src{
-				tileSet[map[y][x]].index * tileSize,
+				tileSet[ground_[y][x]].index * tileSize,
 				0.0f,
 				tileSize,
 				tileSize
@@ -56,46 +38,26 @@ void Map::Render() {
 				tileSize
 			};
 			DrawTexturePro(
-				tileset_,
+				textureManager.get(tileSet_),
 				src,
 				dst,
-				{0, 0},
+				{ 0, 0 },
 				0.0f,
-				WHITE 
+				WHITE
 			);
-
-
-			
 		}
 	}
-
-	//render lines
-
-	for (int x = 0; x < maxX_; x++) {
-		DrawLine(x * tileSize, 0, x * tileSize, maxY_ * tileSize, linesColor);
-	}
-	for (int y = 0; y < maxY_; y++) {
-		DrawLine(0, y * tileSize, maxX_ * tileSize, y * tileSize, linesColor);
-	}
-}
-
-bool Map::isFree(int x, int y) {
-	if (x >= maxX_ || x < 0 || y >= maxY_ || y < 0) {
-		std::cout << "Map::isFree() out of range" << std::endl;
-		return false;
-	}
-	if (isCellFree(map_[y][x])) return true;
-	return false;
-}
-
-void Map::Load(TextureManager* textureManager) {
-	textureManager->load("tileset1", "resources/tileset1.png");
-	tileset_ = textureManager->get("tileset1");
 }
 
 bool isCellFree(TileType tileType) {
 	if (tileType == TileType::eFloor) return true;
 	return false;
 }
-
-MapData::MapData(std::vector<std::string> map, int cellSize) : map_(map), cellSize_(cellSize) {}
+bool Map::isFree(int x, int y) const {
+	if (x >= x_ || x < 0 || y >= y_ || y < 0) {
+		std::cout << "Map::isFree() out of range" << std::endl;
+		return false;
+	}
+	if (isCellFree(tileSet[ground_[y][x]].type)) return true;
+	return false;
+}

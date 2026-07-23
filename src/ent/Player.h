@@ -5,6 +5,7 @@
 
 #include "Unit.h"
 #include "Npc.h"
+#include "../manager/UnitManager.h"
 
 class Player : public Unit {
 public:
@@ -13,16 +14,13 @@ public:
 	void Render() override;
 	void Update(float dt) override;
 	void Input(Vector2 deltaMove, bool isRunning, bool isEPressed);
-	//void Load(TextureManager& textureManager) override;
 
 	void setRunningMultiplier(float value) { velocityRunningMultiplier_ = value; }
-	void setNpcList(std::vector<Npc*> list) { npc_ = list; }
-
-	//void setPosTile(int x, int y); // NO ISFREE() CHECK
+	void setUnitManager(UnitManager* manager) { units_ = manager; }
 	
 private:
 
-	std::vector<Npc*> npc_ = { nullptr };
+	UnitManager* units_;
 	
 	float velocityRunningMultiplier_ = 1.5f;
 

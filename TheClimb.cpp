@@ -67,20 +67,18 @@ const std::vector<std::string> map3m{
 	"1000000000000000000000000001"
 };
 
-MapData test_map(map3m, cellSize);
+//MapData test_map(map3m, cellSize);
 
 int main(void)
 {
 	//initilisation
 	Game game(screenW, screenH, targetFps, cameraZoom);
-	Map map(test_map);
 	Player player(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
-	player.setMap(&map);
-	game.Init(&player, &map);
+	game.Init(&player);
 
-	Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
-	npc1.setDialogue({ "zxcursed", {"im zxcuesed", "coil coil coil"} });
-	game.addNpc(&npc1);
+	//Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
+	//npc1.setDialogue({ "zxcursed", {"im zxcuesed", "coil coil coil"} });
+	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
 
 	initTileSet();
 	//Texture2D textr = LoadTexture("resources/player3.png");
@@ -102,7 +100,7 @@ int main(void)
 		//DrawTexture(textr, 0, 0, WHITE);
 		EndMode2D();
 
-		game.getDialogueManager().Render(screenW, screenH);
+		game.getDialogueManager().Render();
 
 		EndDrawing();
 	}

@@ -33,7 +33,7 @@ void Npc::Render() {
 }
 
 void Npc::Update(float dt) {
-	const float tileSize = getMap()->getTileSize();
+	const float tileSize = TheClimb::kTileSize;
 	if (!isMoving_)
 	{
 		int nextX = posXTile_;
@@ -72,7 +72,7 @@ void Npc::Update(float dt) {
 	}
 }
 
-void Npc::interract() {
+void Npc::Interact(Player& player) {
 	std::cout << "Pong!" << std::endl;
 }
 

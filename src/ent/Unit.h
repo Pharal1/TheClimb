@@ -9,9 +9,18 @@
 #include <iostream>
 #include "../manager/TextureManager.h"
 
+class Player;
+
+class Interactable { //убрать в другой файл
+public:
+	virtual ~Interactable() = default;
+
+	virtual void Interact(Player& player) = 0;
+};
+
 class Unit {
 public:
-	//virtual ~Unit() = default;
+	virtual ~Unit() = default;
 	Unit(int posXTile, 
 		int posYTile, 
 		float velocity, 

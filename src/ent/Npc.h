@@ -6,7 +6,7 @@
 #include "Unit.h"
 #include "../manager/dialogue/Dialogue.h"
 
-class Npc : public Unit {
+class Npc : public Unit, public Interactable {
 public:
 	Npc(
 		int posXTile, 
@@ -26,7 +26,7 @@ public:
 	Dialogue* getDialogue() { return &dialogue_; }
 	void setDialogue(Dialogue dialogue) { dialogue_ = dialogue; }
 
-	void interract() override;
+	void Interact(Player& player) override;
 private:
 	bool isInterractable_;
 

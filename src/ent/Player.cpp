@@ -15,7 +15,7 @@ void Player::Input(Vector2 dm, bool isRunning, bool isEPressed) {
 }
 
 void Player::Update(float dt) {
-	const float tileSize = getMap()->getTileSize();
+	const float tileSize = (float)TheClimb::kTileSize;
 
 	float multiplier = 1.0f;
 	if (isRunning_) multiplier *= velocityRunningMultiplier_;
@@ -45,9 +45,8 @@ void Player::Update(float dt) {
 		dirY_ = (float)(nextY - posYTile_);
 
 		if (!getMap()->isFree(nextX, nextY)) return;
-		for (Npc* npc : npc_) {
-			if (npc->getPosXTile() == nextX && npc->getPosYTile() == nextY) return;
-		}
+		if (units_->collision(nextX, nextY)) return;
+		
 		targetTileX_ = nextX;
 		targetTileY_ = nextY;
 

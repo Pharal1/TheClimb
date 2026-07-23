@@ -12,18 +12,18 @@
 
 class DialogueManager {
 public:
-	//DialogueManager(TextureManager* textureManager);
-
+	DialogueManager(int screenW, int screenH);
 	void startDialogue(Dialogue* dialogue);
 	void skip(bool skip) { skip_ = skip; }
 	bool isActive() const { return isActive_; }
 	void Update(float dt);
-	void Render(int screenW, int screenH) const;
+	void Render() const;
 	void Load(TextureManager& textureManager);
 private:
 	bool isActive_ = false;
 	bool skip_ = false;
-
+	int screenW_;
+	int screenH_;
 	int currentLine_ = 0;
 
 	Dialogue* currentDialogue_{};

@@ -12,14 +12,19 @@ endif()
 project ("TheClimb")
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp" "src/manager/TextureManager.cpp" "src/ent/Unit.cpp" "src/ent/Npc.h" "src/ent/Npc.cpp"  "src/manager/dialogue/DialogueManager.h" "src/manager/dialogue/Dialogue.h" "src/manager/dialogue/Dialogue.cpp" "src/manager/dialogue/DialogueManager.cpp")
+add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp" "src/manager/TextureManager.cpp" "src/ent/Unit.cpp" "src/ent/Npc.h" "src/ent/Npc.cpp"  "src/manager/dialogue/DialogueManager.h" "src/manager/dialogue/Dialogue.h" "src/manager/dialogue/Dialogue.cpp" "src/manager/dialogue/DialogueManager.cpp" "src/manager/renderer.h" "src/consts.h" "src/manager/renderer.cpp" "src/manager/UnitManager.h" "src/manager/UnitManager.cpp")
 
 find_package(raylib CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
+
 target_link_libraries(TheClimb PRIVATE raylib)
+target_link_libraries(TheClimb PRIVATE
+    nlohmann_json::nlohmann_json
+)
 
 add_custom_command(TARGET TheClimb POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory
-    ${CMAKE_SOURCE_DIR}/src/resources
+    ${CMAKE_SOURCE_DIR}/resources
     $<TARGET_FILE_DIR:TheClimb>/resources
 )
 

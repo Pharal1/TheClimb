@@ -1,14 +1,5 @@
 // Map.h
-/*
-'0' = floor
-'1' = wall
-'2' = water
 
-
-
-
-
-*/
 #ifndef MAP_H_
 #define MAP_H_
 
@@ -16,32 +7,33 @@
 #include <vector>
 #include <string>
 #include "raylib.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
+
 #include "Tile.h"
 #include "../manager/TextureManager.h"
+#include "../consts.h"
+
+using json = nlohmann::json;
 
 bool isCellFree(TileType tileType);
 
-struct MapData {
-	std::vector<std::string> map_;
-	int cellSize_;
-
-	MapData(std::vector<std::string> map, int cellSize);
-};
-
 class Map {
 public:
-	Map(MapData mapData);
-	void Render();
-	void Load(TextureManager* textureManager);
-	bool isFree(int x, int y);
-	int getTileSize() const { return mapData_.cellSize_; }
+	//Map(TextureManager& textureManager);
+	Map();
+	void Load(std::string path, TextureManager& textureManager);
+	void RenderGround(TextureManager& textureManager) const;
+	bool isFree(int x, int y) const;
+	//void const setTextureManager(TextureManager* textureManager) { textureManager_ = textureManager; }
 private:
-	std::vector<std::vector<TileType>> map_;
-	MapData mapData_;
-	Texture2D tileset_{};
+	std::vector<std::string> ground_;
+	
+	std::string tileSet_ = "";
+	int x_{};
+	int y_{};
 
-	int maxY_ = 0;
-	int maxX_ = 0;
+	//TextureManager* textureManager_ = nullptr;
 };
 
 #endif // !MAP_H_
