@@ -6,6 +6,7 @@
 #include "raylib.h"
 #include <string>
 
+
 enum class TileType {
 	eWall,
 	eFloor
@@ -13,11 +14,10 @@ enum class TileType {
 
 struct Tile {
 	TileType type;
-	Color color;
 	int index;
 };
 
-extern Tile tileSet[256];
-void initTileSet();
+//extern Tile tileSet[256];
+//void initTileSet();
 
 #endif

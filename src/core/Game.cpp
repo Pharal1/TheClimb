@@ -5,14 +5,14 @@ Game::Game(int screenW, int screenH, int fps, float zoom) : screenW_(screenW), s
 	SetTargetFPS(fps);
 }
 
-void Game::Init(Player* player) {
+void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
 	TextureManager textureManager;
 	textureManager_ = textureManager;
 	renderer_.setTextureManager(&textureManager_);
+	map_.Load("resources/maps/map1.json", textureManager_);
 	//map_.setTextureManager(&textureManager_);
 
-	player_ = player;
-	player_->setUnitManager(&unitManager_);
+	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, textureID, texturePath);
 	//player_->setNpcList(npc_);
 	
 	player_->setMap(&map_);
@@ -23,13 +23,13 @@ void Game::Init(Player* player) {
 	camera.zoom = cameraZoom_;
 	camera.rotation = 0.0f;
 
-	camera.target = { player->getPosX(), player->getPosY() };
+	camera.target = { player_->getPosX(), player_->getPosY() };
 
 	
 
 	camera_ = camera;
 	
-	map_.Load("resources/maps/map1.json", textureManager_);
+	
 	dialogueManager_.Load(textureManager_);
 }
 
@@ -83,7 +83,7 @@ void Game::Update(float dt) {
 }
 
 void Game::Render() {
-	renderer_.Render(map_, unitManager_, dialogueManager_);
+	renderer_.Render(map_, unitManager_, dialogueManager_, *player_);
 }
 void Game::Unload() {
 	textureManager_.unloadAll();

@@ -2,7 +2,20 @@
 
 #include "UnitManager.h"
 
-void UnitManager::Render() {
+#include "../ent/Player.h"
+#include "../ent/Npc.h"
+
+Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
+	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, size, manager, textureID, texturePath);
+	player_ = player.get();
+	player->setUnitManager(this);
+
+	units_.push_back(std::move(player));
+
+	return *player_;
+}
+
+void UnitManager::Render(Player& player) {
 	std::sort(
 		units_.begin(),
 		units_.end(),

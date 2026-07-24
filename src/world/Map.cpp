@@ -14,10 +14,28 @@ void Map::Load(std::string path, TextureManager& textureManager) {
 	x_ = data["width"];
 	y_ = data["height"];
 
-	textureManager.load(data["tileset"], data["tileset_path"]);
-	tileSet_ = data["tileset"];
+	textureManager.load(data["tileset_name"], data["tileset_path"]);
+	tileSetName_ = data["tileset_name"];
 
 	ground_ = data["ground"].get<std::vector<std::string>>();
+
+	for (auto& [key, value] : data["tileset"].items()) {
+		char id = key[0];
+
+		TileType type;
+
+		if (value["type"] == "Wall") {
+			type = TileType::eWall;
+		}
+		else if (value["type"] == "Floor") {
+			type = TileType::eFloor;
+		}
+
+		tileset_[id] = {
+			type,
+			value["index"]
+		};
+	}
 
 }
 
@@ -26,7 +44,7 @@ void Map::RenderGround(TextureManager& textureManager) const {
 	for (int y = 0; y < y_; ++y) {
 		for (int x = 0; x < x_; ++x) {
 			Rectangle src{
-				tileSet[ground_[y][x]].index * tileSize,
+				tileset_.at(ground_[y][x]).index * tileSize,
 				0.0f,
 				tileSize,
 				tileSize
@@ -38,7 +56,7 @@ void Map::RenderGround(TextureManager& textureManager) const {
 				tileSize
 			};
 			DrawTexturePro(
-				textureManager.get(tileSet_),
+				textureManager.get(tileSetName_),
 				src,
 				dst,
 				{ 0, 0 },
@@ -58,6 +76,6 @@ bool Map::isFree(int x, int y) const {
 		std::cout << "Map::isFree() out of range" << std::endl;
 		return false;
 	}
-	if (isCellFree(tileSet[ground_[y][x]].type)) return true;
+	if (isCellFree(tileset_.at(ground_[y][x]).type)) return true;
 	return false;
 }

@@ -17,7 +17,7 @@ class Game {
 public:
 	Game(int screenW, int screenH, int fps, float zoom);
 	
-	void Init(Player* player);
+	void Init(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath);
 	void Update(float dt);
 	void Render(/*TextureManager textureManager*/);
 	void Unload();

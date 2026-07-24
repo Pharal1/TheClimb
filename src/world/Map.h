@@ -9,6 +9,7 @@
 #include "raylib.h"
 #include <nlohmann/json.hpp>
 #include <fstream>
+#include <unordered_map>
 
 #include "Tile.h"
 #include "../manager/TextureManager.h"
@@ -29,7 +30,9 @@ public:
 private:
 	std::vector<std::string> ground_;
 	
-	std::string tileSet_ = "";
+	std::string tileSetName_ = "";
+	std::unordered_map<char, Tile> tileset_;
+
 	int x_{};
 	int y_{};
 

@@ -19,8 +19,7 @@ public:
 	void setUnitManager(UnitManager* manager) { units_ = manager; }
 	
 private:
-
-	UnitManager* units_;
+	UnitManager* units_ = nullptr;
 	
 	float velocityRunningMultiplier_ = 1.5f;
 
