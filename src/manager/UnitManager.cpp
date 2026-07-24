@@ -5,8 +5,8 @@
 #include "../ent/Player.h"
 #include "../ent/Npc.h"
 
-Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
-	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, size, manager, textureID, texturePath);
+Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData) {
+	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, size, manager, textureData);
 	player_ = player.get();
 	player->setUnitManager(this);
 
@@ -47,4 +47,10 @@ Interactable* UnitManager::getInteractableAt(int x, int y) {
 		return dynamic_cast<Interactable*>(unit.get());
 	}
 	return nullptr;
+}
+
+void UnitManager::Update(float dt) {
+	for (const auto& unit : units_) {
+		unit->Update(dt);
+	}
 }

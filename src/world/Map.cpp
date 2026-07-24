@@ -2,11 +2,15 @@
 
 #include "Map.h"
 
+#include "../manager/UnitManager.h"
+#include "../ent/Decor.h"
+
 //Map::Map(TextureManager& textureManager) : textureManager_(textureManager) {}
 Map::Map() {}
 
 
-void Map::Load(std::string path, TextureManager& textureManager) {
+
+void Map::Load(std::string path, TextureManager& textureManager, UnitManager& unitManager) {
 	std::ifstream file(path);
 	json data;
 	file >> data;
@@ -36,6 +40,26 @@ void Map::Load(std::string path, TextureManager& textureManager) {
 			value["index"]
 		};
 	}
+	//auto& a = std::make_unique<Decor>(0, 0, 0, 0, nullptr, {"", "", 0})
+
+	for (auto& [key, value] : data["objects"].items()) {
+		std::cout << key << " " << value << std::endl;
+		
+		std::string type = value.at("type");
+
+		if (type == "decor") {
+			unitManager.addUnit<Decor>(
+				value.at("x"),
+				value.at("y"),
+				0,
+				TheClimb::kTileSize,
+				textureManager,
+				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(),
+				value.at("frames") }
+			);
+		}
+	}
+
 
 }
 

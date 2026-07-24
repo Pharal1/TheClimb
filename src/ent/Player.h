@@ -5,11 +5,12 @@
 
 #include "Unit.h"
 #include "Npc.h"
-#include "../manager/UnitManager.h"
+
+class UnitManager;
 
 class Player : public Unit {
 public:
-	Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath);
+	Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData);
 
 	void Render() override;
 	void Update(float dt) override;

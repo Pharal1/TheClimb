@@ -78,15 +78,20 @@
 
   "objects": [
     {
-      "type": "rock",
-      "x": 3,
-      "y": 3
+      "type": "decor",
+      "x": 5,
+      "y": 2,
+      "texture_path": "resources/bonfire.png",
+      "texture_name": "bonfire",
+      "frames": 3
     },
     {
       "type": "npc",
       "id": "guide",
       "x": 3,
-      "y": 4
+      "y": 4,
+      "texture_path": "resources/npc1.png",
+      "texture_name": "npc1"
     }
   ]
 }

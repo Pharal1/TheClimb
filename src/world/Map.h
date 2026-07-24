@@ -15,6 +15,8 @@
 #include "../manager/TextureManager.h"
 #include "../consts.h"
 
+class UnitManager;
+
 using json = nlohmann::json;
 
 bool isCellFree(TileType tileType);
@@ -23,7 +25,7 @@ class Map {
 public:
 	//Map(TextureManager& textureManager);
 	Map();
-	void Load(std::string path, TextureManager& textureManager);
+	void Load(std::string path, TextureManager& textureManager, UnitManager& unitManager);
 	void RenderGround(TextureManager& textureManager) const;
 	bool isFree(int x, int y) const;
 	//void const setTextureManager(TextureManager* textureManager) { textureManager_ = textureManager; }

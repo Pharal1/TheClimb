@@ -9,10 +9,10 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 	TextureManager textureManager;
 	textureManager_ = textureManager;
 	renderer_.setTextureManager(&textureManager_);
-	map_.Load("resources/maps/map1.json", textureManager_);
+	map_.Load("resources/maps/map1.json", textureManager_, unitManager_);
 	//map_.setTextureManager(&textureManager_);
 
-	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, textureID, texturePath);
+	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, TextureData{ textureID, texturePath });
 	//player_->setNpcList(npc_);
 	
 	player_->setMap(&map_);
@@ -72,12 +72,15 @@ void Game::Update(float dt) {
 
 	handleInput();
 
+	unitManager_.Update(dt);
+
+	/*
 	if (!dialogueManager_.isActive()) {
 		player_->Update(dt);
 	} else {
 		dialogueManager_.Update(dt);
 	}
-
+	*/
 	camera_.target = { player_->getPosX(), player_->getPosY() };
 	camera_.zoom = cameraZoom_;
 }

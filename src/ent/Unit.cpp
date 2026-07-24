@@ -2,12 +2,12 @@
 
 #include "Unit.h"
 
-Unit::Unit(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) : posXTile_(posXTile), posYTile_(posYTile), velocity_(velocity), size_(size), targetTileX_(posXTile), targetTileY_(posYTile) {
+Unit::Unit(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData) : posXTile_(posXTile), posYTile_(posYTile), velocity_(velocity), size_(size), targetTileX_(posXTile), targetTileY_(posYTile), textureData_(textureData) {
 	posX_ = posXTile_ * size + size / 2; //posX_ - size / 2 = posXTile_ * size
 	posY_ = posYTile_ * size + size / 2;
 
-	manager.load(textureID, texturePath);
-	texture_ = manager.get(textureID);
+	manager.load(textureData.textureID, textureData.texturePath);
+	texture_ = manager.get(textureData.textureID);
 
 	textureSource_ = { 0.0f, 0.0f, (float)texture_.width, (float)texture_.height };
 	textureDest_ = { posX_, posY_, size_, size_ };

@@ -7,6 +7,12 @@
 #include <string>
 #include "raylib.h"
 
+struct TextureData {
+	std::string textureID;
+	std::string texturePath;
+	int frames = 1;
+};
+
 class TextureManager {
 public:
 	void load(const std::string& id, const std::string& path);

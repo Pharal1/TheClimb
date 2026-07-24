@@ -20,14 +20,13 @@ public:
 
 class Unit {
 public:
-	virtual ~Unit() = default;
+	virtual ~Unit() { std::cout << "Unit destroyed\n"; };
 	Unit(int posXTile, 
 		int posYTile, 
 		float velocity, 
 		float size, 
 		TextureManager& manager, 
-		const char* textureID, 
-		const char* texturePath
+		TextureData textureData
 	);
 	float getPosX() const { return posX_; }
 	float getPosY() const { return posY_; }
@@ -73,8 +72,10 @@ protected:
 	float size_;
 	Texture2D texture_{};
 	Rectangle textureSource_{};
+	TextureData textureData_;
 	Rectangle textureDest_{};
 	Vector2 textureOrigin_{};
+	int currentFrame_ = 0;
 
 };
 

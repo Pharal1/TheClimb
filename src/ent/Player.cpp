@@ -1,9 +1,10 @@
 // Player.cpp
 #include "Player.h"
+#include "../manager/UnitManager.h"
 
 
-Player::Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) 
-	: Unit(posXTile, posYTile, velocity, size, manager, textureID, texturePath) {
+Player::Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData)
+	: Unit(posXTile, posYTile, velocity, size, manager, textureData) {
 }
 
 void Player::Input(Vector2 dm, bool isRunning, bool isEPressed) {
@@ -55,13 +56,10 @@ void Player::Update(float dt) {
 		isMoving_ = true;
 	}
 	else {
-		//std::cout << "exp: " << (fabs(targetTileX_ * size_ - posX_) <= velocity_ * dt) << std::endl;
-		//std::cout << "exp: " << (fabs(targetTileY_ * size_ + size_/2 - posY_) <= velocity_ * dt) << std::endl;
-		if (fabs(targetTileX_ * size_ + size_/2 - posX_) <= velocity_ * dt && fabs(targetTileY_ * size_ + size_ / 2 - posY_) <= velocity_ * dt ){
+		if (fabs(targetTileX_ * size_ + size_/2 - posX_) <= velocity_ * dt && fabs(targetTileY_ * size_ + size_ / 2 - posY_) <= velocity_ * dt ){ //ДАЛБАЕБ ДВИЖЕНИЕ ПОФИКСЬ ОНО ГАВНО
 			setPosTileX(targetTileX_);
 			setPosTileY(targetTileY_);
 			isMoving_ = false;
-			//std::cout << "IsMoving_: " << isMoving_ << std::endl;
 			return;
 		}
 		else {
@@ -78,8 +76,6 @@ void Player::Render() {
 
 	textureDest_ = { posX, posY - (float)texture_.width / 2, (float)texture_.width, (float)texture_.height };
 	DrawTexturePro(texture_, textureSource_, textureDest_, textureOrigin_, 0.0f, WHITE);
-	//DrawTexture(texture_, 0, 0, WHITE);
-	//std::cout << "Player::Render() called" << std::endl;
 }
 
 

@@ -8,8 +8,7 @@ Npc::Npc(
 	float velocity,
 	float size,
 	TextureManager& manager,
-	const char* textureID,
-	const char* texturePath,
+	TextureData textureData,
 	bool isInterractalbe
 ) 
 	: Unit(
@@ -18,8 +17,7 @@ Npc::Npc(
 		velocity, 
 		size, 
 		manager, 
-		textureID, 
-		texturePath
+		textureData
 	), isInterractable_(isInterractalbe)
 {}
 

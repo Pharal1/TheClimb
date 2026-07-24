@@ -78,7 +78,7 @@ int main(void)
 
 	//Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
 	//npc1.setDialogue({ "zxcursed", {"im zxcuesed", "coil coil coil"} });
-	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
+	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, 1);
 
 	//initTileSet();
 	//Texture2D textr = LoadTexture("resources/player3.png");

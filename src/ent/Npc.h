@@ -14,8 +14,7 @@ public:
 		float velocity, 
 		float size, 
 		TextureManager& manager, 
-		const char* textureID, 
-		const char* texturePath,
+		TextureData textureData,
 		bool isInterractalbe
 	);
 	void Render() override;

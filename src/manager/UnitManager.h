@@ -12,9 +12,10 @@ class Player;
 
 class UnitManager {
 public:
-    Player& CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath);
+    Player& CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData);
 
 	void Render(Player& player);
+    void Update(float dt);
 
     template<typename T, typename... Args>
     T& addUnit(Args&&... args)
