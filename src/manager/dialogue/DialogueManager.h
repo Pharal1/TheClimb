@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+class CameraManager;
+
 class DialogueManager {
 public:
 	DialogueManager(int screenW, int screenH);

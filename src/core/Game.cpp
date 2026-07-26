@@ -1,8 +1,32 @@
 #include "Game.h"
 
-Game::Game(int screenW, int screenH, int fps, float zoom) : screenW_(screenW), screenH_(screenH), targetFps_(fps), cameraZoom_(zoom), dialogueManager_(screenW, screenH), renderer_(), unitManager_(), map_() {
+Game::Game(
+	int screenW,
+	int screenH,
+	int fps,
+	float zoom,
+	float cameraVelocity,
+	float cameraVelocityZoom
+) :
+	screenW_(screenW),
+	screenH_(screenH),
+	targetFps_(fps),
+	renderer_(),
+	map_(),
+	cameraManager_(GetScreenWidth(), GetScreenHeight(), zoom, cameraVelocity, cameraVelocityZoom),
+	unitManager_(),
+	dialogueManager_(screenW, screenH)
+{
+	
+	SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 	InitWindow(screenW, screenH, "ZXCLIMB");
+
+	SetWindowPosition(0, 0);
+	SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
+	//ToggleBorderlessWindowed();
 	SetTargetFPS(fps);
+	
+	
 }
 
 void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
@@ -14,23 +38,12 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 
 	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, TextureData{ textureID, texturePath });
 	//player_->setNpcList(npc_);
-	
+
 	player_->setMap(&map_);
-
-	Camera2D camera = { 0 };
-
-	camera.offset = { screenW_ / 2.0f, screenH_ / 2.0f };
-	camera.zoom = cameraZoom_;
-	camera.rotation = 0.0f;
-
-	camera.target = { player_->getPosX(), player_->getPosY() };
-
-	
-
-	camera_ = camera;
-	
-	
+	cameraManager_.SetTarget(player_);
 	dialogueManager_.Load(textureManager_);
+	std::cout << (float)GetScreenWidth() << (float)GetScreenHeight() << std::endl << cameraManager_.GetCamera().offset.x << cameraManager_.GetCamera().offset.y << std::endl;
+	cameraManager_.Init();
 }
 
 void Game::tryInteract() {
@@ -39,7 +52,7 @@ void Game::tryInteract() {
 	if (unit) {
 		std::cout << "Ping\n";
 		unit->Interact(*player_);
-
+		
 		//dialogueManager_.startDialogue(unit->getDialogue());	
 		
 	}
@@ -81,8 +94,9 @@ void Game::Update(float dt) {
 		dialogueManager_.Update(dt);
 	}
 	*/
-	camera_.target = { player_->getPosX(), player_->getPosY() };
-	camera_.zoom = cameraZoom_;
+	//camera_.target = { player_->getPosX(), player_->getPosY() };
+	//camera_.zoom = cameraZoom_;
+	cameraManager_.Update(dt);
 }
 
 void Game::Render() {

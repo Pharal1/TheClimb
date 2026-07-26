@@ -3,8 +3,10 @@
 
 #include "TheClimb.h"
 
-const int screenW = 1280;
-const int screenH = 720;
+//const int screenW = 1280;
+//const int screenH = 720;
+const int screenW = 1920;
+const int screenH = 1080;
 const int targetFps = 144;
 
 float cameraZoom = 6.0f;
@@ -13,66 +15,17 @@ const char* PlayerTexture = "resources/player1.png";
 const float playerVelocity = 32.0f;
 const float cellSize = 16.0f;
 
-/*
-'0' = floor
-'1' = wall
-'2' = water
-
-
-
-maps:  */
-const std::vector<std::string> map1{
-	"11111",
-	"10001",
-	"10001",
-	"10001",
-	"11111"
-};
-
-const std::vector<std::string> map2{
-	"111111111",
-	"100000001",
-	"102202201",
-	"102202201",
-	"100000001",
-	"102202201",
-	"102202201",
-	"100000001",
-	"111111111"
-};
-
-const std::vector<std::string> map3{
-	"1111111111111111111111111111",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"2222222222222222222222222222",
-	"2222222222222222222222222222",
-	"2222222222222222222222222222",
-	"2222222222222222222222222222"
-};
-
-const std::vector<std::string> map3m{
-	"1111111111111111111111111111",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001",
-	"1000000000000000000000000001"
-};
+const float cameraVel = 16.f;
+const float cameraZoomVel = 1.f;
 
 //MapData test_map(map3m, cellSize);
 
 int main(void)
 {
 	//initilisation
-	Game game(screenW, screenH, targetFps, cameraZoom);
+
+
+	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel);
 	//Player player();
 	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 
@@ -86,12 +39,19 @@ int main(void)
 
 	//loop
 	while (!WindowShouldClose()) {
+		if (!IsWindowFocused())
+		{
+			BeginDrawing();
+			ClearBackground(BLACK);
+			EndDrawing();
+			continue;
+		}
 		float dt = GetFrameTime();
 
 		game.Update(dt);
 		BeginDrawing();
 
-		BeginMode2D(game.getCamera());
+		BeginMode2D(game.GetCameraManager().GetCamera());
 		ClearBackground(RAYWHITE);
 		
 		//DrawTexture(textr1, 0, 0, WHITE);
