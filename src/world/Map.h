@@ -28,6 +28,9 @@ public:
 	void Load(std::string path, TextureManager& textureManager, UnitManager& unitManager);
 	void RenderGround(TextureManager& textureManager) const;
 	bool isFree(int x, int y) const;
+
+	int GetSizeX() const { return x_; }
+	int GetSizeY() const { return y_; }
 	//void const setTextureManager(TextureManager* textureManager) { textureManager_ = textureManager; }
 private:
 	std::vector<std::string> ground_;

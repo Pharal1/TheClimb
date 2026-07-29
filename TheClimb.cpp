@@ -37,7 +37,13 @@ int main(void)
 	//initTileSet();
 	//Texture2D textr = LoadTexture("resources/player3.png");
 	//Texture2D textr1 = LoadTexture(PlayerTexture);
+	RenderTexture2D mapGridTexture = LoadRenderTexture(game.getMap().GetSizeX() * TheClimb::kTileSize, game.getMap().GetSizeY() * TheClimb::kTileSize);
+	
 
+	BeginTextureMode(mapGridTexture);
+		ClearBackground(WHITE);
+		game.getMap().RenderGround(game.getTextureManager());
+	EndTextureMode();
 	//loop
 	while (!WindowShouldClose()) {
 		if (!IsWindowFocused())
@@ -49,19 +55,31 @@ int main(void)
 		}
 		float dt = GetFrameTime();
 
+		
+
 		game.Update(dt);
 		BeginDrawing();
 
-		BeginMode2D(game.GetCameraManager().GetCamera());
-		ClearBackground(RAYWHITE);
-		
-		//DrawTexture(textr1, 0, 0, WHITE);
-		DrawRectangle(0, 0, 4, 4, RED);
-		game.Render();
-		//DrawTexture(textr, 0, 0, WHITE);
-		EndMode2D();
+			BeginMode2D(game.GetCameraManager().GetCamera());
+				ClearBackground(RAYWHITE);
+				DrawTextureRec(
+					mapGridTexture.texture,
+					Rectangle{
+						0, 
+						0,
+						static_cast<float>(mapGridTexture.texture.width),
+						static_cast<float>(-mapGridTexture.texture.height)
+					},
+					Vector2{ 0, 0 },
+					WHITE
+				);
+				//DrawTexture(textr1, 0, 0, WHITE);
+				DrawRectangle(0, 0, 4, 4, RED);
+				game.Render();
+				//DrawTexture(textr, 0, 0, WHITE);
+			EndMode2D();
 
-		game.getDialogueManager().Render();
+			game.getDialogueManager().Render();
 
 		EndDrawing();
 	}

@@ -32,6 +32,7 @@ public:
 	CameraManager GetCameraManager() const { return cameraManager_; }
 	TextureManager& getTextureManager() { return textureManager_; }
 	DialogueManager& getDialogueManager() { return dialogueManager_; }
+	void PreRenderer();
 
 	bool isTileFree(int x, int y) const;
 

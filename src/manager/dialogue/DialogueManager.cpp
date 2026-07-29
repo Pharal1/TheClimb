@@ -184,7 +184,7 @@ void DialogueManager::Render() const {
 	};
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);
-
+	DrawText((currentDialogue_->getText()[currentLine_]).c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
 }
 
 void DialogueManager::Load(TextureManager& textureManager) {

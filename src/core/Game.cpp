@@ -48,6 +48,8 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 	dialogueManager_.Load(textureManager_);
 	std::cout << (float)GetScreenWidth() << (float)GetScreenHeight() << std::endl << cameraManager_.GetCamera().offset.x << cameraManager_.GetCamera().offset.y << std::endl;
 	cameraManager_.Init();
+
+	//renderer_.PreRender(map_);
 }
 
 void Game::tryInteract() {
@@ -106,7 +108,7 @@ void Game::Update(float dt) {
 }
 
 void Game::Render() {
-	renderer_.Render(map_, unitManager_, dialogueManager_, *player_);
+	renderer_.Render(map_, unitManager_, dialogueManager_, *player_, cameraManager_);
 }
 void Game::Unload() {
 	textureManager_.unloadAll();
@@ -118,4 +120,8 @@ bool Game::isTileFree(int x, int y) const {
 	//if (unitManager_.collision(x, y)) return false;
 
 	return true;
+}
+
+void Game::PreRenderer() {
+	renderer_.PreRender(map_);
 }

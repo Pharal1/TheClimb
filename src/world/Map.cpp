@@ -65,6 +65,8 @@ void Map::Load(std::string path, TextureManager& textureManager, UnitManager& un
 
 void Map::RenderGround(TextureManager& textureManager) const {
 	int tileSize = TheClimb::kTileSize;
+	Texture2D& tileTexture = textureManager.get(tileSetName_);
+
 	for (int y = 0; y < y_; ++y) {
 		for (int x = 0; x < x_; ++x) {
 			Rectangle src{
@@ -80,7 +82,7 @@ void Map::RenderGround(TextureManager& textureManager) const {
 				tileSize
 			};
 			DrawTexturePro(
-				textureManager.get(tileSetName_),
+				tileTexture,
 				src,
 				dst,
 				{ 0, 0 },
