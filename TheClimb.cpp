@@ -17,6 +17,7 @@ const float cellSize = 16.0f;
 
 const float cameraVel = 16.f;
 const float cameraZoomVel = 1.f;
+const bool fullscreen_borderless = false;
 
 //MapData test_map(map3m, cellSize);
 
@@ -25,7 +26,7 @@ int main(void)
 	//initilisation
 
 
-	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel);
+	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
 	//Player player();
 	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 

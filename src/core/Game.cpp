@@ -6,7 +6,8 @@ Game::Game(
 	int fps,
 	float zoom,
 	float cameraVelocity,
-	float cameraVelocityZoom
+	float cameraVelocityZoom,
+	bool fullscreen_borderless
 ) :
 	screenW_(screenW),
 	screenH_(screenH),
@@ -17,12 +18,16 @@ Game::Game(
 	unitManager_(),
 	dialogueManager_(screenW, screenH)
 {
-	
-	//SetConfigFlags(FLAG_WINDOW_UNDECORATED);
-	InitWindow(screenW, screenH, "ZXCLIMB");
+	if (fullscreen_borderless) {
+		SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+		InitWindow(screenW, screenH, "ZXCLIMB");
 
-	//SetWindowPosition(0, 0);
-	//SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
+		SetWindowPosition(0, 0);
+		SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
+	}
+	else {
+		InitWindow(screenW, screenH, "ZXCLIMB");
+	}
 	SetTargetFPS(fps);
 	
 	
@@ -47,7 +52,7 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 
 void Game::tryInteract() {
 	if (player_->isMoving()) return;
-	auto* unit = unitManager_.getInteractableAt(player_->getPosXTile() + player_->getDirX(), player_->getPosYTile() + player_->getDirY());
+	auto* unit = unitManager_.getInteractableAt(static_cast<int>(player_->getPosX() / static_cast<float>(TheClimb::kTileSize)) + player_->getDirX(), static_cast<int>(player_->getPosY() / static_cast<float>(TheClimb::kTileSize)) + player_->getDirY());
 	if (unit) {
 		std::cout << "Ping\n";
 		unit->Interact(*player_);
