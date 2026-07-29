@@ -19,24 +19,18 @@ const float cameraVel = 16.f;
 const float cameraZoomVel = 1.f;
 const bool fullscreen_borderless = false;
 
-//MapData test_map(map3m, cellSize);
 
 int main(void)
 {
-	//initilisation
+	
 
 
 	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
-	//Player player();
+	
 	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 
-	//Npc npc1(4, 4, 10, 16, game.getTextureManager(), "npc1", "resources/npc1.png", 1);
-	//npc1.setDialogue({ "zxcursed", {"im zxcuesed", "coil coil coil"} });
 	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, 1);
 
-	//initTileSet();
-	//Texture2D textr = LoadTexture("resources/player3.png");
-	//Texture2D textr1 = LoadTexture(PlayerTexture);
 	RenderTexture2D mapGridTexture = LoadRenderTexture(game.getMap().GetSizeX() * TheClimb::kTileSize, game.getMap().GetSizeY() * TheClimb::kTileSize);
 	
 

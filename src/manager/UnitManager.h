@@ -7,6 +7,7 @@
 #include <algorithm>
 
 #include "../ent/Unit.h"
+#include "CameraManager.h"
 
 class Player;
 
@@ -14,7 +15,7 @@ class UnitManager {
 public:
     Player& CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData);
 
-	void Render(Player& player);
+	void Render(Player& player, const CameraManager& cameraManager);
     void Update(float dt);
 
     template<typename T, typename... Args>

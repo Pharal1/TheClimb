@@ -4,6 +4,7 @@
 
 #include "../ent/Player.h"
 #include "../ent/Npc.h"
+#include "CameraManager.h"
 
 Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData) {
 	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, size, manager, textureData);
@@ -15,7 +16,8 @@ Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, fl
 	return *player_;
 }
 
-void UnitManager::Render(Player& player) {
+void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
+	int renderUnits = 0;
 	std::sort(
 		units_.begin(),
 		units_.end(),
@@ -24,9 +26,25 @@ void UnitManager::Render(Player& player) {
 		}
 	);
 
+		Vector2 topLeft = GetScreenToWorld2D({ -static_cast<float>(TheClimb::kTileSize), -static_cast<float>(TheClimb::kTileSize) }, cameraManager.GetCamera());
+		Vector2 botRight = GetScreenToWorld2D(
+			{
+				static_cast<float>(GetScreenWidth()) + static_cast<float>(TheClimb::kTileSize),
+				static_cast<float>(GetScreenHeight()) + static_cast<float>(TheClimb::kTileSize)
+			},
+			cameraManager.GetCamera()
+		);
 	for (auto& unit : units_) {
+		if (
+			(unit->getPosX() < topLeft.x || unit->getPosX() > botRight.x)
+			||  (unit->getPosY() < topLeft.y || unit->getPosY() > botRight.y)
+			) {
+			continue;
+		}
 		unit->Render();
+		renderUnits++;
 	}
+	std::cout << "Units rendered this frame: " << renderUnits << "\n";
 }
 
 bool UnitManager::collision(int posTileX, int posTileY, Unit* ignore) const {

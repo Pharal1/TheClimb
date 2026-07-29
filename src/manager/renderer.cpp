@@ -6,7 +6,7 @@
  
 void Renderer::Render(Map& map, UnitManager& entities, DialogueManager& dialogueManager, Player& player, const CameraManager& cameraManager) const {
 	//RenderGrownd(map, camera);
-	RenderDynamic(entities, player);
+	RenderDynamic(entities, player, cameraManager);
 	
 	//RenderGui(dialogueManager);
 }

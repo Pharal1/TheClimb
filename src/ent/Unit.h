@@ -34,6 +34,7 @@ public:
 	float getPosYTile() const { return posYTile_; }
 	int getDirX() const { return dirX_; }
 	int getDirY() const { return dirY_; }
+	Vector2 GetPos() const { return Vector2{ posX_, posY_ }; }
 
 	Texture2D getTexture() const { return texture_; }
 	Map* getMap() const { return map_; }

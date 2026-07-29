@@ -17,7 +17,7 @@ public:
 	void PostRender(DialogueManager& dialogueManager) const;
 
 	void RenderGrownd(Map& map) const { map.RenderGround(*textureManager_); }
-	void RenderDynamic(UnitManager& entities, Player& player) const { entities.Render(player); }
+	void RenderDynamic(UnitManager& entities, Player& player, const CameraManager& cameraManager) const { entities.Render(player, cameraManager); }
 	void RenderUpper(Map& map) const {}
 	void RenderGui(DialogueManager& dialogueManager) const { dialogueManager.Render(); }
 private:
