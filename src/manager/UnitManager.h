@@ -30,7 +30,7 @@ public:
 
         return ref;
     }
-    bool collision(int posTileX, int posTileY) const;
+    bool collision(int posTileX, int posTileY, Unit* ignore) const;
 
     Interactable* getInteractableAt(int x, int y);
     Player& getPlayer() { return *player_; }

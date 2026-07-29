@@ -11,6 +11,7 @@ void DialogueManager::startDialogue(Dialogue* dialogue) {
 	currentDialogue_ = dialogue;
 	currentLine_ = 0;
 	isActive_ = true;
+	std::cout << "isActive_ = true\n";
 }
 
 
@@ -31,19 +32,16 @@ static void DrawNineSlice(Texture2D& texture, Rectangle dest,int sourceBorder, i
 	int w = texture.width;
 	int h = texture.height;
 
-	// углы
 	Rectangle topLeft = { 0, 0, sourceBorder, sourceBorder };
 	Rectangle topRight = { w - sourceBorder, 0, sourceBorder, sourceBorder };
 	Rectangle bottomLeft = { 0, h - sourceBorder, sourceBorder, sourceBorder };
 	Rectangle bottomRight = { w - sourceBorder, h - sourceBorder, sourceBorder, sourceBorder };
 
-	// стороны
 	Rectangle top = { sourceBorder, 0, w - sourceBorder * 2, sourceBorder };
 	Rectangle bottom = { sourceBorder, h - sourceBorder, w - sourceBorder * 2, sourceBorder };
 	Rectangle left = { 0, sourceBorder, sourceBorder, h - sourceBorder * 2 };
 	Rectangle right = { w - sourceBorder, sourceBorder, sourceBorder, h - sourceBorder * 2 };
 
-	// центр
 	Rectangle center = {
 		sourceBorder,
 		sourceBorder,
@@ -176,12 +174,13 @@ static void DrawNineSlice(Texture2D& texture, Rectangle dest,int sourceBorder, i
 void DialogueManager::Render() const {
 	if (!isActive_) return;
 	const int screenBorderSize = 9;
+	
 	Rectangle dialogueBox =
 	{
-		screenW_ / 20,
-		screenH_ *2/3,
-		screenW_ - screenW_ / 20 * 2,
-		screenH_ /3 - screenH_ / 100
+		GetScreenWidth() / 20,
+		GetScreenHeight() *2/3,
+		GetScreenWidth() - GetScreenWidth() / 20 * 2,
+		GetScreenHeight() /3 - GetScreenHeight() / 100
 	};
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);

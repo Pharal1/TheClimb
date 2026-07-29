@@ -45,7 +45,7 @@ public:
 	void setPosTileX(int x);
 	void setPosTileY(int y);
 
-
+	void setPos(Vector2 pos) { posX_ = pos.x; posY_ = pos.y; }
 
 	virtual void Update(float dt) = 0;
 	virtual void Render() = 0;
@@ -68,6 +68,8 @@ protected:
 	float posX_;
 	float posY_;
 	float velocity_;
+	float targetX_;
+	float targetY_;
 	
 	float size_;
 	Texture2D texture_{};

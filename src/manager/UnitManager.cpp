@@ -29,9 +29,10 @@ void UnitManager::Render(Player& player) {
 	}
 }
 
-bool UnitManager::collision(int posTileX, int posTileY) const {
+bool UnitManager::collision(int posTileX, int posTileY, Unit* ignore) const {
 	for (const auto& unit : units_) {
-		std::cout << "UnitManager: " << (unit->getPosYTile() == posTileY) << (unit->getPosXTile() == posTileX) << std::endl;
+		//std::cout << "UnitManager: " << (unit->getPosYTile() == posTileY) << (unit->getPosXTile() == posTileX) << std::endl;
+		if (unit.get() == ignore) continue;
 		if (unit->getPosXTile() == posTileX && unit->getPosYTile() == posTileY) return true;
 		
 	}

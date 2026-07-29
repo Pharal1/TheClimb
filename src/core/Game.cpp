@@ -18,12 +18,11 @@ Game::Game(
 	dialogueManager_(screenW, screenH)
 {
 	
-	SetConfigFlags(FLAG_WINDOW_UNDECORATED);
+	//SetConfigFlags(FLAG_WINDOW_UNDECORATED);
 	InitWindow(screenW, screenH, "ZXCLIMB");
 
-	SetWindowPosition(0, 0);
-	SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
-	//ToggleBorderlessWindowed();
+	//SetWindowPosition(0, 0);
+	//SetWindowSize(GetMonitorWidth(0), GetMonitorHeight(0));
 	SetTargetFPS(fps);
 	
 	
@@ -52,8 +51,9 @@ void Game::tryInteract() {
 	if (unit) {
 		std::cout << "Ping\n";
 		unit->Interact(*player_);
-		
-		//dialogueManager_.startDialogue(unit->getDialogue());	
+		Dialogue dialogue("cursed", { "hello,", "yopta" });
+		static_cast<Npc*>(unit)->setDialogue(dialogue);
+		dialogueManager_.startDialogue(static_cast<Npc*>(unit)->getDialogue());	
 		
 	}
 }
@@ -63,10 +63,10 @@ void Game::handleInput() {
 	bool isRunning = false;
 	bool isEPressed = false;
 	bool skip = false;
-	if (IsKeyDown(KEY_D)) deltaPlayer.x++;
 	if (IsKeyDown(KEY_A)) deltaPlayer.x--;
-	if (IsKeyDown(KEY_W)) deltaPlayer.y--;
-	if (IsKeyDown(KEY_S)) deltaPlayer.y++;
+	else if (IsKeyDown(KEY_D)) deltaPlayer.x++;
+	else if (IsKeyDown(KEY_W)) deltaPlayer.y--;
+	else if (IsKeyDown(KEY_S)) deltaPlayer.y++;
 
 	if (IsKeyDown(KEY_LEFT_SHIFT)) isRunning = true;
 
@@ -75,6 +75,7 @@ void Game::handleInput() {
 	}
 	if (IsKeyPressed(KEY_SPACE)) {
 		skip = true;
+		std::cout << "SPACE pressed\n";
 	}
 
 	dialogueManager_.skip(skip);
@@ -86,12 +87,12 @@ void Game::Update(float dt) {
 	handleInput();
 
 	unitManager_.Update(dt);
-
+	dialogueManager_.Update(dt);
 	/*
 	if (!dialogueManager_.isActive()) {
 		player_->Update(dt);
 	} else {
-		dialogueManager_.Update(dt);
+		
 	}
 	*/
 	//camera_.target = { player_->getPosX(), player_->getPosY() };
@@ -109,7 +110,7 @@ void Game::Unload() {
 bool Game::isTileFree(int x, int y) const {
 	if (!map_.isFree(x, y)) return false;
 
-	if (unitManager_.collision(x, y)) return false;
+	//if (unitManager_.collision(x, y)) return false;
 
 	return true;
 }
