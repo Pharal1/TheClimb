@@ -12,7 +12,7 @@ endif()
 project ("TheClimb")
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp" "src/manager/TextureManager.cpp" "src/ent/Unit.cpp" "src/ent/Npc.h" "src/ent/Npc.cpp"  "src/manager/dialogue/DialogueManager.h" "src/manager/dialogue/Dialogue.h" "src/manager/dialogue/Dialogue.cpp" "src/manager/dialogue/DialogueManager.cpp" "src/manager/renderer.h" "src/consts.h" "src/manager/renderer.cpp" "src/manager/UnitManager.h" "src/manager/UnitManager.cpp" "src/ent/Decor.h" "src/ent/Decor.cpp" "src/manager/CameraManager.h" "src/manager/CameraManager.cpp")
+add_executable (TheClimb "TheClimb.cpp" "TheClimb.h"  "src/manager/TextureManager.h" "src/world/Tile.h" "src/world/Map.cpp" "src/world/Map.h" "src/ent/Player.cpp" "src/ent/Player.h" "src/core/Game.cpp"  "src/world/Tile.cpp" "src/manager/TextureManager.cpp" "src/ent/Unit.cpp" "src/ent/Npc.h" "src/ent/Npc.cpp"  "src/manager/dialogue/DialogueManager.h" "src/manager/dialogue/Dialogue.h" "src/manager/dialogue/Dialogue.cpp" "src/manager/dialogue/DialogueManager.cpp" "src/manager/renderer.h" "src/consts.h" "src/manager/renderer.cpp" "src/manager/UnitManager.h" "src/manager/UnitManager.cpp" "src/ent/Decor.h" "src/ent/Decor.cpp" "src/manager/CameraManager.h" "src/manager/CameraManager.cpp"  "src/util.h")
 
 find_package(raylib CONFIG REQUIRED)
 find_package(nlohmann_json CONFIG REQUIRED)

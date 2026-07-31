@@ -7,6 +7,7 @@ DialogueManager::DialogueManager(int screenW, int screenH) : screenW_(screenW), 
 }
 
 void DialogueManager::startDialogue(Dialogue* dialogue) {
+	if (isActive()) return;
 	if (!dialogue) return;
 	currentDialogue_ = dialogue;
 	currentLine_ = 0;

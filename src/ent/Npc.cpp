@@ -9,17 +9,17 @@ Npc::Npc(
 	float size,
 	TextureManager& manager,
 	TextureData textureData,
-	bool isInterractalbe
-) 
-	: Unit(
+	std::string dialogue
+) : Unit(
 		posXTile, 
 		posYTile, 
 		velocity, 
 		size, 
 		manager, 
 		textureData
-	), isInterractable_(isInterractalbe)
-{}
+	) {
+
+}
 
 void Npc::Render() {
 	float posX = posX_;

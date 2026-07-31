@@ -1,0 +1,39 @@
+{
+  "id": "test",
+
+  "nodes": {
+    "start": {
+      "speaker": "Guide",
+      "text": "ohayou",
+      "next": "ask"
+    },
+    "ask": {
+      "speaker": "Guide",
+      "text": "Ты кто?",
+
+      "choices": [
+        {
+          "text": "Я активист Игила",
+          "next": "anwser1"
+        },
+        {
+          "text": "Я фурри фембойчик",
+          "next": "anwser2"
+        }
+      ]
+    },
+    "anwser1": {
+      "speaker": "Guide",
+      "text": "О, вы из команды Павла Дурова?",
+      "next": "end"
+    },
+    "anwser2": {
+      "speaker": "Guide",
+      "text": "О, вы из команды ShitCodeSolutions!",
+      "next": "end"
+    },
+    "end": {
+      "end": true
+    }
+  }
+}

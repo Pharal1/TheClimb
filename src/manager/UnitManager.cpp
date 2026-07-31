@@ -26,11 +26,11 @@ void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
 		}
 	);
 
-		Vector2 topLeft = GetScreenToWorld2D({ -static_cast<float>(TheClimb::kTileSize), -static_cast<float>(TheClimb::kTileSize) }, cameraManager.GetCamera());
+		Vector2 topLeft = GetScreenToWorld2D({ -static_cast<float>(TheClimb::kTileSize * 2), -static_cast<float>(TheClimb::kTileSize * 2) }, cameraManager.GetCamera());
 		Vector2 botRight = GetScreenToWorld2D(
 			{
-				static_cast<float>(GetScreenWidth()) + static_cast<float>(TheClimb::kTileSize),
-				static_cast<float>(GetScreenHeight()) + static_cast<float>(TheClimb::kTileSize)
+				static_cast<float>(GetScreenWidth()) + static_cast<float>(TheClimb::kTileSize * 2),
+				static_cast<float>(GetScreenHeight()) + static_cast<float>(TheClimb::kTileSize * 2)
 			},
 			cameraManager.GetCamera()
 		);
@@ -44,7 +44,7 @@ void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
 		unit->Render();
 		renderUnits++;
 	}
-	std::cout << "Units rendered this frame: " << renderUnits << "\n";
+	//std::cout << "Units rendered this frame: " << renderUnits << "\n";
 }
 
 bool UnitManager::collision(int posTileX, int posTileY, Unit* ignore) const {

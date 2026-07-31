@@ -5,6 +5,7 @@
 
 #include "Unit.h"
 #include "../manager/dialogue/Dialogue.h"
+#include <string>
 
 class Npc : public Unit, public Interactable {
 public:
@@ -15,7 +16,7 @@ public:
 		float size, 
 		TextureManager& manager, 
 		TextureData textureData,
-		bool isInterractalbe
+		std::string dialogue
 	);
 	void Render() override;
 	void Update(float dt) override;
@@ -28,7 +29,7 @@ public:
 	void Interact(Player& player) override;
 private:
 	bool isInterractable_;
-
+	bool hasDialogue;
 	Dialogue dialogue_{};
 	//bool isTalking_;
 

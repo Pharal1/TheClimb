@@ -4,24 +4,28 @@
   "tileset_name": "tileset1",
   "tileset_path": "resources/tileset2.png",
 
-  "tileset": {
-    "0": {
+  "tileset": [
+    {
+      "char": "0",
       "type": "Wall",
       "index": 3
     },
-    "G": {
+    {
+      "char": "G",
       "type": "Floor",
       "index": 0
     },
-    "S": {
+    {
+      "char": "S",
       "type": "Wall",
       "index": 1
     },
-    "W": {
+    {
+      "char": "W",
       "type": "Wall",
       "index": 2
     }
-  },
+  ],
 
   "ground": [
     "GGGGGGGGWWWWWW000000000000000000000000000000000000",
@@ -91,7 +95,8 @@
       "x": 3,
       "y": 4,
       "texture_path": "resources/npc1.png",
-      "texture_name": "npc1"
+      "texture_name": "npc1",
+      "dialogue_path": "tesources/dialogues/dialogue1.json"
     }
   ]
 }

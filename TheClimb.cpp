@@ -29,7 +29,7 @@ int main(void)
 	
 	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 
-	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, 1);
+	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, "null");
 
 	RenderTexture2D mapGridTexture = LoadRenderTexture(game.getMap().GetSizeX() * TheClimb::kTileSize, game.getMap().GetSizeY() * TheClimb::kTileSize);
 	

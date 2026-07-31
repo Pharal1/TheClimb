@@ -70,10 +70,12 @@ void Game::handleInput() {
 	bool isRunning = false;
 	bool isEPressed = false;
 	bool skip = false;
-	if (IsKeyDown(KEY_A)) deltaPlayer.x--;
-	else if (IsKeyDown(KEY_D)) deltaPlayer.x++;
-	else if (IsKeyDown(KEY_W)) deltaPlayer.y--;
-	else if (IsKeyDown(KEY_S)) deltaPlayer.y++;
+	if (!dialogueManager_.isActive()) {
+		if (IsKeyDown(KEY_A)) deltaPlayer.x--;
+		else if (IsKeyDown(KEY_D)) deltaPlayer.x++;
+		else if (IsKeyDown(KEY_W)) deltaPlayer.y--;
+		else if (IsKeyDown(KEY_S)) deltaPlayer.y++;
+	}
 
 	if (IsKeyDown(KEY_LEFT_SHIFT)) isRunning = true;
 
@@ -91,10 +93,11 @@ void Game::handleInput() {
 
 void Game::Update(float dt) {
 
-	handleInput();
-
 	unitManager_.Update(dt);
 	dialogueManager_.Update(dt);
+	handleInput();
+	
+	
 	/*
 	if (!dialogueManager_.isActive()) {
 		player_->Update(dt);

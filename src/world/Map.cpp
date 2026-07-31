@@ -4,6 +4,8 @@
 
 #include "../manager/UnitManager.h"
 #include "../ent/Decor.h"
+#include "../ent/Npc.h"
+#include "../util.h"
 
 //Map::Map(TextureManager& textureManager) : textureManager_(textureManager) {}
 Map::Map() {}
@@ -11,9 +13,31 @@ Map::Map() {}
 
 
 void Map::Load(std::string path, TextureManager& textureManager, UnitManager& unitManager) {
-	std::ifstream file(path);
+
 	json data;
-	file >> data;
+
+	if (!Util::LoadJson(path, data)) {
+		return;
+	}
+
+	if (!Util::Contains(data, "MAP", "width")) {
+		return;
+	}
+	if (!Util::Contains(data, "MAP", "height")) {
+		return;
+	}
+	if (!Util::Contains(data, "MAP", "tileset_name")) {
+		return;
+	}
+	if (!Util::Contains(data, "MAP", "tileset_path")) {
+		return;
+	}
+	if (!Util::Contains(data, "MAP", "ground")) {
+		return;
+	}
+	if (!Util::Contains(data, "MAP", "tileset")) {
+		return;
+	}
 
 	x_ = data["width"];
 	y_ = data["height"];
@@ -23,39 +47,70 @@ void Map::Load(std::string path, TextureManager& textureManager, UnitManager& un
 
 	ground_ = data["ground"].get<std::vector<std::string>>();
 
-	for (auto& [key, value] : data["tileset"].items()) {
-		char id = key[0];
+	for (auto& value : data["tileset"]) {
+		char id = value.value("char", (std::string)"0")[0];
 
-		TileType type;
+		TileType type = TileType::eWall;
 
-		if (value["type"] == "Wall") {
+		std::string typeName = value.value("type", "Wall");
+
+		if (typeName == "Wall") {
 			type = TileType::eWall;
 		}
-		else if (value["type"] == "Floor") {
+		else if (typeName == "Floor") {
 			type = TileType::eFloor;
 		}
 
 		tileset_[id] = {
 			type,
-			value["index"]
+			value.value("index", 0)
 		};
 	}
-	//auto& a = std::make_unique<Decor>(0, 0, 0, 0, nullptr, {"", "", 0})
 
-	for (auto& [key, value] : data["objects"].items()) {
-		std::cout << key << " " << value << std::endl;
-		
-		std::string type = value.at("type");
+	if (!Util::Contains(data, "MAP", "objects")) {
+		return;
+	}
+
+	for (auto& value : data["objects"]) {
+		if (!Util::Contains(value, "MAP", "type", "objects")) {
+			continue;
+		}
+		if (!Util::Contains(value, "MAP", "texture_path", "objects")) {
+			continue;
+		}
+		if (!Util::Contains(value, "MAP", "texture_name", "objects")) {
+			continue;
+		}
+
+		std::string type = value["type"];
 
 		if (type == "decor") {
 			unitManager.addUnit<Decor>(
-				value.at("x"),
-				value.at("y"),
+				value.value("x", 0),
+				value.value("y", 0),
 				0,
 				TheClimb::kTileSize,
 				textureManager,
-				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(),
-				value.at("frames") }
+				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) }
+			);
+		}
+		else if (type == "npc") {
+			std::string dialogue;
+			if (Util::Contains(value, "MAP", "dialogue_path", false)) {
+				dialogue = value.at("dialogue_path").get<std::string>();
+			}
+			else {
+				dialogue = (std::string)"";
+			}
+
+			unitManager.addUnit<Npc>(
+				value.value("x", 0),
+				value.value("y", 0),
+				value.value("velocity", TheClimb::kNpcVelocity),
+				TheClimb::kTileSize,
+				textureManager,
+				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) },
+				dialogue
 			);
 		}
 	}
