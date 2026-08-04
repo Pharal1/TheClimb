@@ -8,8 +8,9 @@ Npc::Npc(
 	float velocity,
 	float size,
 	TextureManager& manager,
-	TextureData textureData,
-	std::string dialogue
+	DialogueManager& dialogueManager,
+	TextureData textureData
+	//std::string dialogue
 ) : Unit(
 		posXTile, 
 		posYTile, 
@@ -17,7 +18,7 @@ Npc::Npc(
 		size, 
 		manager, 
 		textureData
-	) {
+	), dialogueManager_(dialogueManager) {
 
 }
 

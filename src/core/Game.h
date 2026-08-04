@@ -18,6 +18,8 @@ enum class GameStatus {
 	eDialogue
 };
 
+
+
 class Game {
 public:
 	Game(int screenW, int screenH, int fps, float zoom, float cameraVelocity, float cameraVelocityZoom, bool fullscreen_borderless);
@@ -26,7 +28,7 @@ public:
 	void Update(float dt);
 	void Render(/*TextureManager textureManager*/);
 	void Unload();
-	int getW() const { return screenW_; }
+	int GetW() const { return screenW_; }
 	int getH() const { return screenH_; }
 	Map& const getMap() { return map_; }
 	CameraManager GetCameraManager() const { return cameraManager_; }

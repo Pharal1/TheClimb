@@ -5,18 +5,45 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
+
+struct DialogueChoice
+{
+	std::string text;
+	std::string next;
+
+	DialogueChoice(std::string text, std::string next);
+};
+
+
+struct DialogueNode
+{
+	std::string speaker;
+	std::string text;
+	std::string next;
+	std::vector<DialogueChoice> choices;
+	
+	bool end = false;
+
+	DialogueNode(
+		std::string speaker, 
+		std::string text,
+		std::string next,
+		std::vector<DialogueChoice> choices,
+		bool end = false
+	);
+	DialogueNode() = default;
+};
 
 class Dialogue {
 public:
-	Dialogue(std::string name, std::vector<std::string> text);
-	Dialogue();
-
-	std::string getSpeakerName() { return speaker_; }
-	std::vector<std::string> getText() { return text_; }
-
+	Dialogue() = default;
+	Dialogue(std::unordered_map<std::string, DialogueNode> nodes, std::string startNode);
+	//bool Load(std::string& path);
+	
+	std::unordered_map<std::string, DialogueNode> nodes_;
+	std::string startNode_;
 private:
-	std::string speaker_;
-	std::vector<std::string> text_;
 };
 
 #endif // !DIALOGUE_H_

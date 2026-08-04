@@ -14,7 +14,7 @@ public:
 
 	void Render() override;
 	void Update(float dt) override;
-	void Input(Vector2 deltaMove, bool isRunning, bool isEPressed);
+	void Input(Util::HandleInput handleInputData);
 
 	void setRunningMultiplier(float value) { velocityRunningMultiplier_ = value; }
 	void setUnitManager(UnitManager* manager) { units_ = manager; }
@@ -28,9 +28,6 @@ private:
 	bool isEPressed_ = false;
 	//float velocity_diag;
 	
-
-	
-
 };
 
 #endif

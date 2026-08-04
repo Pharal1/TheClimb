@@ -2,30 +2,78 @@
 
 #include "DialogueManager.h"
 
+using json = nlohmann::json;
+
 DialogueManager::DialogueManager(int screenW, int screenH) : screenW_(screenW), screenH_(screenH) {
 
 }
 
-void DialogueManager::startDialogue(Dialogue* dialogue) {
+void DialogueManager::Input(Util::HandleInput handleInputData) {
+	skip_ = handleInputData.skip;
+	dy_ = handleInputData.deltaGui.y;
+}
+
+void DialogueManager::startDialogue(std::string dialogueName) {
 	if (isActive()) return;
+	
+	auto* dialogue = getDialogue(dialogueName);
+	// debug
+	std::cout << "dialogueName: " << dialogueName << "\n";
+	//
+
 	if (!dialogue) return;
+	std::cout << "dialogue is not nullptr\n";
+	if (dialogue->nodes_.size() == 0) return;
+	std::cout << "dialogue has nodes\n";
 	currentDialogue_ = dialogue;
-	currentLine_ = 0;
+	auto start_str = dialogue->nodes_.find(dialogue->startNode_);
+	if (start_str == dialogue->nodes_.end()) {
+		//std::cerr << "ERROR DIALOGUE MANAGER cannot read start node\n";
+		Util::PrintError("cannot read start node", "DIALOGUE MANAGER");
+	}
+	currentLine_ = dialogue->nodes_.at(dialogue->startNode_);
 	isActive_ = true;
-	std::cout << "isActive_ = true\n";
+	std::cout << Util::Color::Green << "Dialogue started\n" << Util::Color::Reset;
 }
 
 
 void DialogueManager::Update(float dt) {
+	//std::cout << ChoiceCurrentLine_ << "\n";
 	if (!isActive_) return;
-	if (skip_) {
-		currentLine_++;
-		std::cout << "skipped!" << std::endl;
+	if (!choice_ && skip_) {
+		std::cout << "skipped!\n";
 
-		if (currentLine_ >= currentDialogue_->getText().size()) {
+		DialogueNode next = currentDialogue_->nodes_.at(currentLine_.next);
+		if (next.end == true) {
 			isActive_ = false;
+			return;
 		}
+		if (next.choices.size() != 0) {
+			choice_ = true;
+			
+		}
+		currentLine_ = next;
+	} else if (skip_ && choice_) {
+		std::cout << std::string{ (currentLine_.choices[ChoiceCurrentLine_].next) } << "\n";
+		choice_ = false;
+		DialogueNode next = currentDialogue_->nodes_.at(currentLine_.choices[ChoiceCurrentLine_].next);
+		if (next.end == true) {
+			isActive_ = false;
+			return;
+		}
+		currentLine_ = next;
+	} else if (choice_) {
+		//std::cout << currentLine_.choices[0].text << "\n" << currentLine_.choices[1].text << "\n"; //ХУЙНЯ
+		if (dy_ == 0) return;
+		int next = ChoiceCurrentLine_ + static_cast<int>(dy_);
+		std::cout << next << "\n";
+		if (next < 0) ChoiceCurrentLine_ = currentLine_.choices.size() - 1;
+		else if (next > currentLine_.choices.size() - 1) ChoiceCurrentLine_ = 0;
+		else ChoiceCurrentLine_ = next;
+		std::cout << "C: " << ChoiceCurrentLine_ << "\n";
+		return;
 	}
+	
 }
 
 static void DrawNineSlice(Texture2D& texture, Rectangle dest,int sourceBorder, int border)
@@ -175,17 +223,25 @@ static void DrawNineSlice(Texture2D& texture, Rectangle dest,int sourceBorder, i
 void DialogueManager::Render() const {
 	if (!isActive_) return;
 	const int screenBorderSize = 9;
-	
+
 	Rectangle dialogueBox =
 	{
 		GetScreenWidth() / 20,
-		GetScreenHeight() *2/3,
+		GetScreenHeight() * 2 / 3,
 		GetScreenWidth() - GetScreenWidth() / 20 * 2,
-		GetScreenHeight() /3 - GetScreenHeight() / 100
+		GetScreenHeight() / 3 - GetScreenHeight() / 100
 	};
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);
-	DrawText((currentDialogue_->getText()[currentLine_]).c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
+	//DrawText((currentDialogue_->getText()[currentLine_]).c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
+
+	DrawText(currentLine_.text.c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
+	if (choice_) {
+		for (int i = 0; i < currentLine_.choices.size(); i++) {
+			DrawText(currentLine_.choices[i].text.c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12 + (i + 1) * 32, 32, WHITE);
+		}
+		DrawRectangle(GetScreenWidth() / 20, GetScreenHeight() * 2 / 3 + (ChoiceCurrentLine_ + 1) * 32, GetScreenWidth() - GetScreenWidth() / 20 * 2, 32, Color{0, 0, 0, 128});
+	}
 }
 
 void DialogueManager::Load(TextureManager& textureManager) {
@@ -194,4 +250,43 @@ void DialogueManager::Load(TextureManager& textureManager) {
 	texture_border_ = &textureManager.get("dialogue_border");
 	texture_box_ = &textureManager.get("dialogue_box");
 	
+}
+
+std::string DialogueManager::LoadDialogue(std::string& path, std::string start) {
+	json data;
+
+	if (!Util::LoadJson(path, data)) return "";
+	if (!Util::Contains(data, "DIALOGUE MANAGER", "id")) return "";
+	if (!Util::Contains(data, "DIALOGUE MANAGER", "nodes")) return "";
+																												
+	std::string id = data.value<std::string>("id", "");
+
+	std::unordered_map<std::string, DialogueNode> nodes{};
+	//DialogueNode node;
+
+	for (auto& [nodeKey, value] : data["nodes"].items()) {
+		std::vector<DialogueChoice> choice{};
+		if (value.contains("choices")) {
+			for (auto& item : value["choices"]) {
+				choice.push_back({ item.value("text", ""), item.value("next", "end") });
+			}
+		}
+		nodes.insert({ nodeKey, DialogueNode{ 
+			value.value("speaker", ""), 
+			value.value("text", ""), 
+			value.value("next", "end"), 
+			std::move(choice),
+			value.value("end", false)
+		} });
+		
+	}
+	dialogues.emplace(id, std::make_unique<Dialogue>(std::move(nodes), start));
+	return id;
+}
+
+Dialogue* DialogueManager::getDialogue(std::string id) const {
+	auto item = dialogues.find(id);
+
+	if (item == dialogues.end()) return nullptr;
+	return item->second.get();
 }

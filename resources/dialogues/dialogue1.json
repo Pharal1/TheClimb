@@ -1,4 +1,4 @@
-{
+﻿{
   "id": "test",
 
   "nodes": {
@@ -9,27 +9,27 @@
     },
     "ask": {
       "speaker": "Guide",
-      "text": "Ты кто?",
+      "text": "LOL",
 
       "choices": [
         {
-          "text": "Я активист Игила",
+          "text": "кд чд",
           "next": "anwser1"
         },
         {
-          "text": "Я фурри фембойчик",
+          "text": "NOT LOL",
           "next": "anwser2"
         }
       ]
     },
     "anwser1": {
       "speaker": "Guide",
-      "text": "О, вы из команды Павла Дурова?",
+      "text": "LOLOLOOO",
       "next": "end"
     },
     "anwser2": {
       "speaker": "Guide",
-      "text": "О, вы из команды ShitCodeSolutions!",
+      "text": "kys.",
       "next": "end"
     },
     "end": {

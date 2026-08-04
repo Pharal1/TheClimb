@@ -96,7 +96,7 @@
       "y": 4,
       "texture_path": "resources/npc1.png",
       "texture_name": "npc1",
-      "dialogue_path": "tesources/dialogues/dialogue1.json"
+      "dialogue_path": "resources/dialogues/dialogue1.json"
     }
   ]
 }

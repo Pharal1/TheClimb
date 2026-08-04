@@ -6,13 +6,16 @@
 #include "../ent/Decor.h"
 #include "../ent/Npc.h"
 #include "../util.h"
+#include "../manager/dialogue/DialogueManager.h"
+
+using json = nlohmann::json;
 
 //Map::Map(TextureManager& textureManager) : textureManager_(textureManager) {}
 Map::Map() {}
 
 
 
-void Map::Load(std::string path, TextureManager& textureManager, UnitManager& unitManager) {
+void Map::Load(std::string path, TextureManager& textureManager, UnitManager& unitManager, DialogueManager& dialogueManager) {
 
 	json data;
 
@@ -95,23 +98,26 @@ void Map::Load(std::string path, TextureManager& textureManager, UnitManager& un
 			);
 		}
 		else if (type == "npc") {
-			std::string dialogue;
-			if (Util::Contains(value, "MAP", "dialogue_path", false)) {
-				dialogue = value.at("dialogue_path").get<std::string>();
-			}
-			else {
-				dialogue = (std::string)"";
-			}
-
-			unitManager.addUnit<Npc>(
+			auto& npc = unitManager.addUnit<Npc>(
 				value.value("x", 0),
 				value.value("y", 0),
 				value.value("velocity", TheClimb::kNpcVelocity),
 				TheClimb::kTileSize,
 				textureManager,
-				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) },
-				dialogue
+				dialogueManager,
+				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) }
 			);
+			std::string dialogue;
+			//if (Util::Contains(value, "MAP", "dialogue_path", false)) {
+			dialogue = value.value<std::string>("dialogue_path", "");
+			
+			if (dialogue != "") {
+				dialogueManager.LoadDialogue(dialogue);
+				npc.SetDialogue(dialogueManager.LoadDialogue(dialogue));
+			}
+			
+
+			
 		}
 	}
 

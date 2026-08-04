@@ -17,19 +17,24 @@ const float cellSize = 16.0f;
 
 const float cameraVel = 16.f;
 const float cameraZoomVel = 1.f;
-const bool fullscreen_borderless = false;
+const bool fullscreen_borderless = 1;
+
 
 
 int main(void)
 {
-	
+	#ifdef _DEBUG
+		std::cout << Util::Color::Cyan << "INFO " << "--DEBUG MODE--\n" << Util::Color::Reset;
+	#else
+	std::cout << Util::Color::Cyan << "INFO " << "--RELEASE MODE--\n" << Util::Color::Reset;
+	#endif
 
 
 	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
 	
 	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
 
-	game.getUnitManager().addUnit<Npc>(4, 3, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, "null");
+	//game.getUnitManager().addUnit<Npc>(0, 7, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, game.getDialogueManager());
 
 	RenderTexture2D mapGridTexture = LoadRenderTexture(game.getMap().GetSizeX() * TheClimb::kTileSize, game.getMap().GetSizeY() * TheClimb::kTileSize);
 	
@@ -43,7 +48,7 @@ int main(void)
 		if (!IsWindowFocused())
 		{
 			BeginDrawing();
-			ClearBackground(BLACK);
+			ClearBackground(WHITE);
 			EndDrawing();
 			continue;
 		}

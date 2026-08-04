@@ -7,10 +7,10 @@ Player::Player(int posXTile, int posYTile, float velocity, float size, TextureMa
 	: Unit(posXTile, posYTile, velocity, size, manager, textureData) {
 }
 
-void Player::Input(Vector2 dm, bool isRunning, bool isEPressed) {
-	dm_ = dm;
-	isRunning_ = isRunning;
-	isEPressed_ = isEPressed;
+void Player::Input(Util::HandleInput handleInputData) {
+	dm_ = handleInputData.deltaPlayer;
+	isRunning_ = handleInputData.isRunning;
+	isEPressed_ = handleInputData.isEPressed;
 
 	//std::cout << npc_ << std::endl;
 }
