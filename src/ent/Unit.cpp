@@ -18,8 +18,8 @@ Unit::Unit
 	targetTileY_(posYTile), 
 	textureData_(textureData
 ) {
-	posX_ = posXTile_ * size + size / 2; //posX_ - size / 2 = posXTile_ * size
-	posY_ = posYTile_ * size + size / 2;
+	posX_ = posXTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2; //posX_ - size / 2 = posXTile_ * size
+	posY_ = posYTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2;
 
 	targetX_ = posX_;
 	targetY_ = posY_;
@@ -28,8 +28,8 @@ Unit::Unit
 	texture_ = manager.get(textureData.textureID);
 
 	textureSource_ = { 0.0f, 0.0f, (float)texture_.width, (float)texture_.height };
-	textureDest_ = { posX_, posY_, size_, size_ };
-	textureOrigin_ = { size_ / 2.0f, size_ };
+	textureDest_ = { posX_, posY_, TheClimb::kTileSize, TheClimb::kTileSize };
+	textureOrigin_ = { TheClimb::kTileSize / 2.0f, TheClimb::kTileSize };
 }
 void Unit::setPosTile(int x, int y) {
 	if (map_ == nullptr) return;
@@ -40,8 +40,8 @@ void Unit::setPosTile(int x, int y) {
 	posXTile_ = x;
 	posYTile_ = y;
 
-	posX_ = posXTile_ * size_ + size_ / 2;
-	posY_ = posYTile_ * size_ + size_ / 2;
+	posX_ = posXTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2;
+	posY_ = posYTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2;
 }
 
 void Unit::setPosTileX(int x) {
@@ -53,7 +53,7 @@ void Unit::setPosTileX(int x) {
 	*/
 	posXTile_ = x;
 
-	posX_ = posXTile_ * size_ + size_ / 2;
+	posX_ = posXTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2;
 }
 void Unit::setPosTileY(int y) {
 	if (getMap() == nullptr) return;
@@ -64,7 +64,7 @@ void Unit::setPosTileY(int y) {
 	*/
 	posYTile_ = y;
 
-	posY_ = posYTile_ * size_ + size_ / 2;
+	posY_ = posYTile_ * TheClimb::kTileSize + TheClimb::kTileSize / 2;
 }
 
 void Unit::interract() {

@@ -2,7 +2,8 @@
 
 #include "CameraManager.h"
 #include "../ent/Unit.h"
-#include "raymath.h"
+#include "../ent/Player.h"
+#include "../util.h"
 
 CameraManager::CameraManager(int width, int height, float zoom, float velocity, float zoomVelocity) : zoom_(zoom), camera_(), velocity_(velocity), zoomVelocity_(zoomVelocity) {
 	//camera_.offset = { (float)width/2, (float)height/2 };
@@ -18,6 +19,11 @@ void CameraManager::SetTarget(Unit* target) {
 void CameraManager::SetTarget(Vector2 target) {
 	targetXY_ = target;
 	mode_ = CameraTargetMode::eTargetCoordinates;
+}
+
+void CameraManager::SetTarget() {
+	targetUnit_ = player_;
+	mode_ = CameraTargetMode::eTargetUnit;
 }
 
 void CameraManager::Update(float dt) {
@@ -39,6 +45,11 @@ void CameraManager::Update(float dt) {
 	camera_.zoom = Lerp(camera_.zoom, zoom_, zoomVelocity_ * dt);
 }
 
-void CameraManager::Init() {
+void CameraManager::Init(Player* player) {
+	if (!player) {
+		std::cout << Util::Color::Red << "ERROR CAMERA MANAGER failed to init camera (player is nullptr)\n" << Util::Color::Reset;
+	}
+	
 	camera_.offset = Vector2((float)GetScreenWidth()/2.f, (float)GetScreenHeight()/2.f);
+	player_ = player;
 }

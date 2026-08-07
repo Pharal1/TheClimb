@@ -1,10 +1,12 @@
 // DialogueManager
 
 #include "DialogueManager.h"
+#include "../CameraManager.h"
+#include "../../ent/Npc.h"
 
 using json = nlohmann::json;
 
-DialogueManager::DialogueManager(int screenW, int screenH) : screenW_(screenW), screenH_(screenH) {
+DialogueManager::DialogueManager(int screenW, int screenH, CameraManager& cameraManager) : screenW_(screenW), screenH_(screenH), cameraManager_(cameraManager) {
 
 }
 
@@ -13,27 +15,22 @@ void DialogueManager::Input(Util::HandleInput handleInputData) {
 	dy_ = handleInputData.deltaGui.y;
 }
 
-void DialogueManager::startDialogue(std::string dialogueName) {
+void DialogueManager::startDialogue(std::string dialogueName, Player& player, Npc& npc) {
 	if (isActive()) return;
 	
 	auto* dialogue = getDialogue(dialogueName);
-	// debug
-	std::cout << "dialogueName: " << dialogueName << "\n";
-	//
 
 	if (!dialogue) return;
-	std::cout << "dialogue is not nullptr\n";
 	if (dialogue->nodes_.size() == 0) return;
-	std::cout << "dialogue has nodes\n";
 	currentDialogue_ = dialogue;
 	auto start_str = dialogue->nodes_.find(dialogue->startNode_);
 	if (start_str == dialogue->nodes_.end()) {
-		//std::cerr << "ERROR DIALOGUE MANAGER cannot read start node\n";
 		Util::PrintError("cannot read start node", "DIALOGUE MANAGER");
 	}
 	currentLine_ = dialogue->nodes_.at(dialogue->startNode_);
 	isActive_ = true;
-	std::cout << Util::Color::Green << "Dialogue started\n" << Util::Color::Reset;
+	cameraManager_.SetTarget(&npc);
+	skip_ = false;
 }
 
 
@@ -41,11 +38,12 @@ void DialogueManager::Update(float dt) {
 	//std::cout << ChoiceCurrentLine_ << "\n";
 	if (!isActive_) return;
 	if (!choice_ && skip_) {
-		std::cout << "skipped!\n";
 
 		DialogueNode next = currentDialogue_->nodes_.at(currentLine_.next);
 		if (next.end == true) {
 			isActive_ = false;
+			cameraManager_.SetTarget();
+			ChoiceCurrentLine_ = 0;
 			return;
 		}
 		if (next.choices.size() != 0) {
@@ -54,23 +52,21 @@ void DialogueManager::Update(float dt) {
 		}
 		currentLine_ = next;
 	} else if (skip_ && choice_) {
-		std::cout << std::string{ (currentLine_.choices[ChoiceCurrentLine_].next) } << "\n";
 		choice_ = false;
 		DialogueNode next = currentDialogue_->nodes_.at(currentLine_.choices[ChoiceCurrentLine_].next);
 		if (next.end == true) {
 			isActive_ = false;
+			cameraManager_.SetTarget();
+			ChoiceCurrentLine_ = 0;
 			return;
 		}
 		currentLine_ = next;
 	} else if (choice_) {
-		//std::cout << currentLine_.choices[0].text << "\n" << currentLine_.choices[1].text << "\n"; //ХУЙНЯ
 		if (dy_ == 0) return;
 		int next = ChoiceCurrentLine_ + static_cast<int>(dy_);
-		std::cout << next << "\n";
 		if (next < 0) ChoiceCurrentLine_ = currentLine_.choices.size() - 1;
 		else if (next > currentLine_.choices.size() - 1) ChoiceCurrentLine_ = 0;
 		else ChoiceCurrentLine_ = next;
-		std::cout << "C: " << ChoiceCurrentLine_ << "\n";
 		return;
 	}
 	
@@ -233,7 +229,6 @@ void DialogueManager::Render() const {
 	};
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);
-	//DrawText((currentDialogue_->getText()[currentLine_]).c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
 
 	DrawText(currentLine_.text.c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
 	if (choice_) {

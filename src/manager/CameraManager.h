@@ -2,10 +2,12 @@
 
 #pragma once
 
-#include "raylib.h"
+#include <raylib.h>
+#include <raymath.h>
 
 
 class Unit;
+class Player;
 
 enum class CameraTargetMode {
 	eTargetNone,
@@ -17,12 +19,15 @@ class CameraManager {
 public:
 	CameraManager(int width, int height, float zoom, float velocity, float zoomVelocity);
 	void Update(float dt);
-	void Init();
+	void Init(Player* player);
 
 	void SetMode(CameraTargetMode mode) { mode_ = mode; }
 	void SetZoom(float zoom) { zoom_ = zoom; }
 	void SetTarget(Unit* target);
 	void SetTarget(Vector2 target);
+	//Sets target to the player 
+	//from CameraManager::Init()
+	void SetTarget();
 
 	Camera2D GetCamera() const { return camera_; }
 private:
@@ -34,4 +39,5 @@ private:
 	float zoom_;
 	float velocity_;
 	float zoomVelocity_;
+	Player* player_ = nullptr;
 };

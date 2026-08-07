@@ -2,11 +2,12 @@
 
 #pragma once
 
+#include <raylib.h>
+
 #include <string>
 #include "nlohmann/json.hpp"
 #include <fstream>
 #include <iostream>
-#include <raylib.h>
 
 using json = nlohmann::json;
 

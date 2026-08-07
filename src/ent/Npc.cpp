@@ -73,5 +73,7 @@ void Npc::Update(float dt) {
 
 void Npc::Interact(Player& player) {
 	std::cout << "Pong!" << std::endl;
+
+	dialogueManager_.startDialogue(dialogue_, player, *this);
 }
 

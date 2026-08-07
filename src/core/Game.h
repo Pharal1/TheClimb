@@ -13,9 +13,10 @@
 #include "../manager/renderer.h"
 #include "../manager/CameraManager.h"
 
-enum class GameStatus {
+enum class GameState {
 	eDefault,
-	eDialogue
+	eDialogue,
+	eCutSchene
 };
 
 
@@ -30,7 +31,7 @@ public:
 	void Unload();
 	int GetW() const { return screenW_; }
 	int getH() const { return screenH_; }
-	Map& const getMap() { return map_; }
+	Map& getMap() { return map_; }
 	CameraManager GetCameraManager() const { return cameraManager_; }
 	TextureManager& getTextureManager() { return textureManager_; }
 	DialogueManager& getDialogueManager() { return dialogueManager_; }
@@ -57,7 +58,7 @@ private:
 	const int screenH_;
 	const int targetFps_;
 	
-
+	GameState state_ = GameState::eDefault;
 
 
 };

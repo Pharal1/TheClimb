@@ -16,7 +16,7 @@ Game::Game(
 	map_(),
 	cameraManager_(GetScreenWidth(), GetScreenHeight(), zoom, cameraVelocity, cameraVelocityZoom),
 	unitManager_(),
-	dialogueManager_(screenW, screenH)
+	dialogueManager_(screenW, screenH, cameraManager_)
 {
 	std::string title = "ZXCLIBE";
 #ifdef _DEBUG
@@ -42,18 +42,14 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 	textureManager_ = textureManager;
 	renderer_.setTextureManager(&textureManager_);
 	map_.Load("resources/maps/map1.json", textureManager_, unitManager_, dialogueManager_);
-	//map_.setTextureManager(&textureManager_);
 
 	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, TextureData{ textureID, texturePath });
-	//player_->setNpcList(npc_);
 
 	player_->setMap(&map_);
 	cameraManager_.SetTarget(player_);
 	dialogueManager_.Load(textureManager_);
-	std::cout << (float)GetScreenWidth() << (float)GetScreenHeight() << std::endl << cameraManager_.GetCamera().offset.x << cameraManager_.GetCamera().offset.y << std::endl;
-	cameraManager_.Init();
-
-	//renderer_.PreRender(map_);
+	
+	cameraManager_.Init(player_);
 }
 
 void Game::tryInteract() {
@@ -62,9 +58,7 @@ void Game::tryInteract() {
 	if (unit) {
 		std::cout << "Ping\n";
 		unit->Interact(*player_);
-		//Dialogue dialogue("cursed", { "hello,", "yopta" });
-		//static_cast<Npc*>(unit)->setDialogue(dialogue);
-		dialogueManager_.startDialogue(static_cast<Npc*>(unit)->GetDialogue());	
+		//dialogueManager_.startDialogue(static_cast<Npc*>(unit)->GetDialogue());	
 		
 	}
 }
@@ -76,32 +70,40 @@ void Game::handleInput() {
 	bool isEPressed = false;
 	bool skip = false;
 
-	if (IsKeyDown(KEY_A)) deltaPlayer.x--;
+	if      (IsKeyDown(KEY_A)) deltaPlayer.x--;
 	else if (IsKeyDown(KEY_D)) deltaPlayer.x++;
 	else if (IsKeyDown(KEY_W)) deltaPlayer.y--;
 	else if (IsKeyDown(KEY_S)) deltaPlayer.y++;
 
-	if (IsKeyPressed(KEY_LEFT)) deltaGui.x--;
+	if      (IsKeyPressed(KEY_LEFT))  deltaGui.x--;
 	else if (IsKeyPressed(KEY_RIGHT)) deltaGui.x++;
-	else if (IsKeyPressed(KEY_UP)) deltaGui.y--;
-	else if (IsKeyPressed(KEY_DOWN)) deltaGui.y++;
+	else if (IsKeyPressed(KEY_UP))    deltaGui.y--;
+	else if (IsKeyPressed(KEY_DOWN))  deltaGui.y++;
+	else if (IsKeyPressed(KEY_A))     deltaGui.x--;
+	else if (IsKeyPressed(KEY_D))     deltaGui.x++;
+	else if (IsKeyPressed(KEY_W))     deltaGui.y--;
+	else if (IsKeyPressed(KEY_S))     deltaGui.y++;
+
 
 	if (IsKeyDown(KEY_LEFT_SHIFT)) isRunning = true;
 
 	if (IsKeyPressed(KEY_E)) {
-		tryInteract();
+		isEPressed = true;
+		//if (dialogueManager_.isActive()) skip = true;
 	}
 	if (IsKeyPressed(KEY_SPACE) || IsKeyPressed(KEY_ENTER)) {
 		skip = true;
-		std::cout << "SPACE or ENTER pressed\n";
 	}
 
-	Util::HandleInput handleInputData{ isRunning, isEPressed, skip, deltaPlayer, deltaGui };
+	Util::HandleInput handleInputData{ isRunning, isEPressed, skip + isEPressed, deltaPlayer, deltaGui };
 
 	dialogueManager_.Input(handleInputData);
 
 	if (!dialogueManager_.isActive()) {
 		player_->Input(handleInputData);
+	}
+	if (isEPressed) {
+		if (!dialogueManager_.isActive()) tryInteract();
 	}
 }
 

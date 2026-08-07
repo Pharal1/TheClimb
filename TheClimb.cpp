@@ -15,9 +15,9 @@ const char* PlayerTexture = "resources/player1.png";
 const float playerVelocity = 32.0f;
 const float cellSize = 16.0f;
 
-const float cameraVel = 16.f;
+const float cameraVel = 8.f;
 const float cameraZoomVel = 1.f;
-const bool fullscreen_borderless = 1;
+
 
 
 
@@ -25,14 +25,17 @@ int main(void)
 {
 	#ifdef _DEBUG
 		std::cout << Util::Color::Cyan << "INFO " << "--DEBUG MODE--\n" << Util::Color::Reset;
+		const bool fullscreen_borderless = 0;
+		std::cout << Util::Color::Cyan << "INFO Window init in not fullscreen\n" << Util::Color::Reset;
 	#else
-	std::cout << Util::Color::Cyan << "INFO " << "--RELEASE MODE--\n" << Util::Color::Reset;
+		std::cout << Util::Color::Cyan << "INFO " << "--RELEASE MODE--\n" << Util::Color::Reset;
+		const bool fullscreen_borderless = 1;
 	#endif
 
 
 	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
 	
-	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player3.png");
+	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player_test.png");
 
 	//game.getUnitManager().addUnit<Npc>(0, 7, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, game.getDialogueManager());
 

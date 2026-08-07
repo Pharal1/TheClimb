@@ -8,17 +8,20 @@
 #include "raylib.h"
 #include "../TextureManager.h"
 #include "../../util.h"
+#include "../../ent/Unit.h"
 
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+class Player;
+class Npc;
 
 class CameraManager;
 
 class DialogueManager {
 public:
-	DialogueManager(int screenW, int screenH);
-	void startDialogue(std::string dialogueName);
+	DialogueManager(int screenW, int screenH, CameraManager& cameraManager);
+	void startDialogue(std::string dialogueName, Player& player, Npc& npc);
 	void Input(Util::HandleInput handleInputData);
 	bool isActive() const { return isActive_; }
 	void Update(float dt);
@@ -37,12 +40,13 @@ private:
 	float dy_ = 0.f;
 
 	//id, Dialogue
-
 	Dialogue* currentDialogue_{};
 	Texture* texture_border_{};
 	Texture* texture_box_{};
 	
 	DialogueNode currentLine_{};
+
+	CameraManager& cameraManager_;
 	
 	std::unordered_map<std::string, std::unique_ptr<Dialogue>> dialogues;
 };
