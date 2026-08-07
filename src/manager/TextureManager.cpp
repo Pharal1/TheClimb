@@ -18,3 +18,8 @@ void TextureManager::unloadAll() {
 	}
 	textures_.clear();
 }
+
+void TextureManager::LoadFont(std::string& path) {
+	font_ = LoadFontEx(path.c_str(), 32, 0, 0);
+	SetTextureFilter(font_.texture, TEXTURE_FILTER_POINT);
+}

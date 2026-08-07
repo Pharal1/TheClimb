@@ -36,6 +36,9 @@ void DialogueManager::startDialogue(std::string dialogueName, Player& player, Np
 
 void DialogueManager::Update(float dt) {
 	if (!isActive_) return;
+
+
+
 	if (!choice_ && skip_) {
 
 		DialogueNode next = currentDialogue_->nodes_.at(currentLine_.next);
@@ -229,10 +232,10 @@ void DialogueManager::Render() const {
 
 	DrawNineSlice(*texture_box_, dialogueBox, 3, screenBorderSize);
 
-	DrawText(currentLine_.text.c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12, 32, WHITE);
+	DrawTextEx(font_, currentLine_.text.c_str(), Vector2{static_cast<float>(GetScreenWidth() / 18), static_cast<float>(GetScreenHeight() * 8 / 12)}, 32, 1, WHITE);
 	if (choice_) {
 		for (int i = 0; i < currentLine_.choices.size(); i++) {
-			DrawText(currentLine_.choices[i].text.c_str(), GetScreenWidth() / 18, GetScreenHeight() * 8 / 12 + (i + 1) * 32, 32, WHITE);
+			DrawTextEx(font_, currentLine_.choices[i].text.c_str(), Vector2{ static_cast<float>(GetScreenWidth() / 18), static_cast<float>(GetScreenHeight() * 8 / 12 + (i + 1) * 32) }, 24, 1, WHITE);
 		}
 		DrawRectangle(GetScreenWidth() / 20, GetScreenHeight() * 2 / 3 + (ChoiceCurrentLine_ + 1) * 32, GetScreenWidth() - GetScreenWidth() / 20 * 2, 32, Color{0, 0, 0, 128});
 	}
@@ -243,7 +246,8 @@ void DialogueManager::Load(TextureManager& textureManager) {
 	textureManager.load("dialogue_box", "resources/gui/dialogue_border_9_slice.png");
 	texture_border_ = &textureManager.get("dialogue_border");
 	texture_box_ = &textureManager.get("dialogue_box");
-	
+
+	font_ = *textureManager.GetFont();
 }
 
 std::string DialogueManager::LoadDialogue(std::string& path, std::string start) {

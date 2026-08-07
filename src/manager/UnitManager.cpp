@@ -17,6 +17,7 @@ Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, fl
 }
 
 void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
+	Color color = { 0, 0, 0, 128 };
 	int renderUnits = 0;
 	std::sort(
 		units_.begin(),
@@ -41,6 +42,8 @@ void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
 			) {
 			continue;
 		}
+
+		DrawEllipse(unit->getPosX(), unit->getPosY() + TheClimb::kTileSize / 4, TheClimb::kTileSize / 3, TheClimb::kTileSize / 4, color);
 		unit->Render();
 		renderUnits++;
 	}

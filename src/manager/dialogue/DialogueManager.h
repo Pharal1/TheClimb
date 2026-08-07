@@ -34,6 +34,7 @@ private:
 	bool isActive_ = false;
 	bool skip_ = false;
 	bool choice_ = false;
+	bool writing_text_ = false;
 	int screenW_;
 	int screenH_;
 	int ChoiceCurrentLine_{ 0 };
@@ -44,6 +45,8 @@ private:
 	Texture* texture_border_{};
 	Texture* texture_box_{};
 	
+	Font font_{};
+
 	DialogueNode currentLine_{};
 
 	CameraManager& cameraManager_;

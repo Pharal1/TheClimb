@@ -40,6 +40,8 @@ Game::Game(
 void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
 	TextureManager textureManager;
 	textureManager_ = textureManager;
+	std::string font = "resources/font/PressStart2P-Regular.ttf";
+	textureManager_.LoadFont(font);
 	renderer_.setTextureManager(&textureManager_);
 	map_.Load("resources/maps/map1.json", textureManager_, unitManager_, dialogueManager_);
 

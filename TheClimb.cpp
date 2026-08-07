@@ -19,8 +19,6 @@ const float cameraVel = 8.f;
 const float cameraZoomVel = 1.f;
 
 
-
-
 int main(void)
 {
 	#ifdef _DEBUG
@@ -31,6 +29,9 @@ int main(void)
 		std::cout << Util::Color::Cyan << "INFO " << "--RELEASE MODE--\n" << Util::Color::Reset;
 		const bool fullscreen_borderless = 1;
 	#endif
+
+	
+	
 
 
 	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
