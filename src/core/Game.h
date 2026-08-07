@@ -59,8 +59,6 @@ private:
 	const int targetFps_;
 	
 	GameState state_ = GameState::eDefault;
-
-
 };
 
 #endif // !GAME_H_

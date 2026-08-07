@@ -37,7 +37,6 @@ void Npc::Update(float dt) {
 	{
 		int nextX = posXTile_;
 		int nextY = posYTile_;
-		//std::cout << "1" << std::endl;
 		if (dm_.x != 0)
 			nextX += (int)dm_.x;
 		else if (dm_.y != 0)
@@ -55,13 +54,10 @@ void Npc::Update(float dt) {
 		}
 	}
 	else {
-		//std::cout << "exp: " << (fabs(targetTileX_ * size_ - posX_) <= velocity_ * dt) << std::endl;
-		//std::cout << "exp: " << (fabs(targetTileY_ * size_ + size_/2 - posY_) <= velocity_ * dt) << std::endl;
 		if (fabs(targetTileX_ * size_ + size_ / 2 - posX_) <= velocity_ * dt && fabs(targetTileY_ * size_ + size_ / 2 - posY_) <= velocity_ * dt) {
 			setPosTileX(targetTileX_);
 			setPosTileY(targetTileY_);
 			isMoving_ = false;
-			//std::cout << "IsMoving_: " << isMoving_ << std::endl;
 			return;
 		}
 		else {

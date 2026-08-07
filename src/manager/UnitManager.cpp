@@ -44,12 +44,10 @@ void UnitManager::Render(Player& player, const CameraManager& cameraManager) {
 		unit->Render();
 		renderUnits++;
 	}
-	//std::cout << "Units rendered this frame: " << renderUnits << "\n";
 }
 
 bool UnitManager::collision(int posTileX, int posTileY, Unit* ignore) const {
 	for (const auto& unit : units_) {
-		//std::cout << "UnitManager: " << (unit->getPosYTile() == posTileY) << (unit->getPosXTile() == posTileX) << std::endl;
 		if (unit.get() == ignore) continue;
 		if (unit->getPosXTile() == posTileX && unit->getPosYTile() == posTileY) return true;
 		

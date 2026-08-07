@@ -35,7 +35,6 @@ void DialogueManager::startDialogue(std::string dialogueName, Player& player, Np
 
 
 void DialogueManager::Update(float dt) {
-	//std::cout << ChoiceCurrentLine_ << "\n";
 	if (!isActive_) return;
 	if (!choice_ && skip_) {
 

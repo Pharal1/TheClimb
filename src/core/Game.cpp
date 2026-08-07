@@ -105,6 +105,12 @@ void Game::handleInput() {
 	if (isEPressed) {
 		if (!dialogueManager_.isActive()) tryInteract();
 	}
+
+
+	if (IsKeyPressed(KEY_F11)) {
+		Util::debug = !Util::debug;
+		Util::debug ? std::cout << Util::Color::Cyan << "Debug: ON\n" << Util::Color::Reset : std::cout << Util::Color::Cyan << "Debug: OFF\n" << Util::Color::Reset;
+	}
 }
 
 void Game::Update(float dt) {

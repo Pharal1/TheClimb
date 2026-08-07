@@ -13,6 +13,13 @@ using json = nlohmann::json;
 
 namespace Util {
 
+    
+#ifdef _DEBUG
+    inline bool debug = true;
+#else
+    inline bool debug = false;
+#endif
+
 	bool LoadJson(std::string& path, json& out);
 
 	//name in caps
