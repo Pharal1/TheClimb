@@ -7,7 +7,7 @@
 #include <vector>
 #include <string>
 #include "raylib.h"
-#include <nlohmann/json.hpp>
+
 #include <fstream>
 #include <unordered_map>
 

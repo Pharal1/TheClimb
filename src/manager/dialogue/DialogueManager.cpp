@@ -1,6 +1,9 @@
 // DialogueManager
 
 #include "DialogueManager.h"
+
+#include <nlohmann/json.hpp>
+
 #include "../CameraManager.h"
 #include "../../ent/Npc.h"
 

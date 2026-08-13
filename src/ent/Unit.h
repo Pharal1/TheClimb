@@ -24,7 +24,6 @@ public:
 	Unit(int posXTile, 
 		int posYTile, 
 		float velocity, 
-		float size, 
 		TextureManager& manager, 
 		TextureData textureData
 	);
@@ -72,7 +71,6 @@ protected:
 	float targetX_;
 	float targetY_;
 	
-	float size_;
 	Texture2D texture_{};
 	Rectangle textureSource_{};
 	TextureData textureData_;

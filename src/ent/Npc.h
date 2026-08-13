@@ -14,7 +14,6 @@ public:
 		int posXTile, 
 		int posYTile, 
 		float velocity, 
-		float size, 
 		TextureManager& manager,
 		DialogueManager& dialogueManager,
 		TextureData textureData

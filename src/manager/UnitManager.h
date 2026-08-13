@@ -13,7 +13,7 @@ class Player;
 
 class UnitManager {
 public:
-    Player& CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData);
+    Player& CreatePlayer(int posXTile, int posYTile, float velocity, TextureManager& manager, TextureData textureData);
 
 	void Render(Player& player, const CameraManager& cameraManager);
     void Update(float dt);

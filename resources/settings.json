@@ -1,0 +1,11 @@
+{
+  "screen_w": 1920,
+  "screen_h": 1080,
+  "fps": 144,
+
+  "camera_zoom": 6.0,
+  "camera_velocity": 8.0,
+  "camera_velocity_zoom": 1.0,
+
+  "player_velocity": 32.0
+}

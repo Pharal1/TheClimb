@@ -2,6 +2,8 @@
 
 #include "Map.h"
 
+#include <nlohmann/json.hpp>
+
 #include "../manager/UnitManager.h"
 #include "../ent/Decor.h"
 #include "../ent/Npc.h"
@@ -92,7 +94,6 @@ void Map::Load(std::string path, TextureManager& textureManager, UnitManager& un
 				value.value("x", 0),
 				value.value("y", 0),
 				0,
-				TheClimb::kTileSize,
 				textureManager,
 				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) }
 			);
@@ -102,7 +103,6 @@ void Map::Load(std::string path, TextureManager& textureManager, UnitManager& un
 				value.value("x", 0),
 				value.value("y", 0),
 				value.value("velocity", TheClimb::kNpcVelocity),
-				TheClimb::kTileSize,
 				textureManager,
 				dialogueManager,
 				TextureData{ value.at("texture_name").get<std::string>(), value.at("texture_path").get<std::string>(), value.value("frames", 1) }
@@ -130,8 +130,19 @@ void Map::RenderGround(TextureManager& textureManager) const {
 
 	for (int y = 0; y < y_; ++y) {
 		for (int x = 0; x < x_; ++x) {
+			int tileIndex = -1;
+			
+			if (!tileset_.contains(ground_[y][x])) {
+				Util::PrintError("Missing tile in tileset: ", "MAP RENDERING");
+				std::cout << "at " << ground_[y][x] << ", {" << x << ";" << y << "}\n";
+			}
+			else {
+				tileIndex = tileset_.at(ground_[y][x]).index;
+			}
+
+
 			Rectangle src{
-				tileset_.at(ground_[y][x]).index * tileSize,
+				tileIndex * tileSize,
 				0.0f,
 				tileSize,
 				tileSize
@@ -163,6 +174,7 @@ bool Map::isFree(int x, int y) const {
 		std::cout << "Map::isFree() out of range" << std::endl;
 		return false;
 	}
+	if (!tileset_.contains(ground_[y][x])) return false;
 	if (isCellFree(tileset_.at(ground_[y][x]).type)) return true;
 	return false;
 }

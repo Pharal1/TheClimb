@@ -3,24 +3,80 @@
 
 #include "TheClimb.h"
 
+using json = nlohmann::json;
+
 //const int screenW = 1280;
 //const int screenH = 720;
-const int screenW = 1920;
-const int screenH = 1080;
-const int targetFps = 144;
+int screenW = 1920;
+int screenH = 1080;
+int targetFps = 144;
 
 float cameraZoom = 6.0f;
 
 const char* PlayerTexture = "resources/player1.png";
-const float playerVelocity = 32.0f;
-const float cellSize = 16.0f;
+float playerVelocity = 32.0f;
+float cellSize = 16.0f;
 
-const float cameraVel = 8.f;
-const float cameraZoomVel = 1.f;
+float cameraVel = 8.f;
+float cameraZoomVel = 1.f;
 
+
+std::string settings_path = "resources/settings.json";
+
+static bool load() {
+	json settings;
+	if (!Util::LoadJson(settings_path, settings)) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: json", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "screen_w")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: screen_w", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "screen_h")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: screen_h", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "fps")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: fps", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "camera_zoom")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: camera_zoom", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "camera_velocity")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: camera_velocity", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "camera_velocity_zoom")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: camera_velocity_zoom", "MAIN");
+		return false;
+	}
+	if (!Util::Contains(settings, "MAIN", "player_velocity")) {
+		Util::PrintError("FAILED TO LOAD SETTINGS: player_velocity", "MAIN");
+		return false;
+	}
+
+	screenW = settings.at("screen_w");
+	screenH = settings.at("screen_h");
+
+	targetFps = settings.at("fps");
+
+	cameraZoom = settings.at("camera_zoom");
+	cameraVel = settings.at("camera_velocity");
+	cameraZoomVel = settings.at("camera_velocity_zoom");
+
+	playerVelocity = settings.at("player_velocity");
+
+	return true;
+}
 
 int main(void)
 {
+	if (!load()) return 1;
+
+
 	#ifdef _DEBUG
 		std::cout << Util::Color::Cyan << "INFO " << "--DEBUG MODE--\n" << Util::Color::Reset;
 		const bool fullscreen_borderless = 0;
@@ -31,14 +87,13 @@ int main(void)
 	#endif
 
 	
-	
+		
+
 
 
 	Game game(screenW, screenH, targetFps, cameraZoom, cameraVel, cameraZoomVel, fullscreen_borderless);
 	
-	game.Init(1, 1, playerVelocity, cellSize, game.getTextureManager(), "player1", "resources/player_test.png");
-
-	//game.getUnitManager().addUnit<Npc>(0, 7, 10, 16, game.getTextureManager(), TextureData{ "npc1", "resources/npc1.png" }, game.getDialogueManager());
+	game.Init(1, 1, playerVelocity, game.getTextureManager(), "player1", "resources/player-test-2f.png");
 
 	RenderTexture2D mapGridTexture = LoadRenderTexture(game.getMap().GetSizeX() * TheClimb::kTileSize, game.getMap().GetSizeY() * TheClimb::kTileSize);
 	
@@ -48,6 +103,7 @@ int main(void)
 		game.getMap().RenderGround(game.getTextureManager());
 	EndTextureMode();
 	//loop
+
 	while (!WindowShouldClose()) {
 		if (!IsWindowFocused())
 		{
@@ -76,17 +132,13 @@ int main(void)
 					Vector2{ 0, 0 },
 					WHITE
 				);
-				//DrawTexture(textr1, 0, 0, WHITE);
-				DrawRectangle(0, 0, 4, 4, RED);
 				game.Render();
-				//DrawTexture(textr, 0, 0, WHITE);
 			EndMode2D();
 
 			game.getDialogueManager().Render();
 
 		EndDrawing();
 	}
-	//UnloadTexture(textr1);
 	game.Unload();
 	CloseWindow();
 

@@ -10,7 +10,7 @@ class UnitManager;
 
 class Player : public Unit {
 public:
-	Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData);
+	Player(int posXTile, int posYTile, float velocity, TextureManager& manager, TextureData textureData);
 
 	void Render() override;
 	void Update(float dt) override;

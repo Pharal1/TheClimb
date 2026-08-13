@@ -5,10 +5,9 @@
 Decor::Decor(int posXTile,
 	int posYTile,
 	float velocity,
-	float size,
 	TextureManager& manager,
 	TextureData textureData
-) : Unit(posXTile, posYTile, velocity, size, manager, textureData) {
+) : Unit(posXTile, posYTile, velocity, manager, textureData) {
 }
 
 void Decor::Render() {

@@ -23,9 +23,9 @@ namespace Util {
 	bool LoadJson(std::string& path, json& out);
 
 	//name in caps
-	bool Contains(json data, std::string name, std::string item, bool warning = 0, bool display = 1);
+	bool Contains(json& data, std::string name, std::string item, bool warning = 0, bool display = 1);
 	//name in caps
-	bool Contains(json data, std::string name, std::string item, std::string tree, bool warning = 0, bool display = 1);
+	bool Contains(json& data, std::string name, std::string item, std::string tree, bool warning = 0, bool display = 1);
 
     //Prints error depends on type 
     //(2nd arg = this)

@@ -3,8 +3,8 @@
 #include "../manager/UnitManager.h"
 
 
-Player::Player(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData)
-	: Unit(posXTile, posYTile, velocity, size, manager, textureData) {
+Player::Player(int posXTile, int posYTile, float velocity, TextureManager& manager, TextureData textureData)
+	: Unit(posXTile, posYTile, velocity, manager, textureData) {
 }
 
 void Player::Input(Util::HandleInput handleInputData) {
@@ -86,15 +86,24 @@ void Player::Update(float dt) {
 void Player::Render() {
 	float posX = posX_;
 	float posY = posY_;
-	float size = size_;
 
 	textureDest_ = { posX - 4.f, posY, 24.f, 24.f};
 
 	float x = 0.f;
+	float sizeX = 24.f;
 
 	if (dirY_ == -1) x += 24.f;
+	else {
+		if (dirX_ == 1) {
+			x += 48.f;
+		}
+		else if (dirX_ == -1) {
+			x += 72.f;
+			//sizeX *= -1;
+		}
+	}
 
-	DrawTexturePro(texture_, {x, 0.f, 24.f, 24.f }, textureDest_, textureOrigin_, 0.0f, WHITE);
+	DrawTexturePro(texture_, {x, 0.f, sizeX, 24.f }, textureDest_, textureOrigin_, 0.0f, WHITE);
 }
 
 

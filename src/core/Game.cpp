@@ -37,7 +37,7 @@ Game::Game(
 	
 }
 
-void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, const char* textureID, const char* texturePath) {
+void Game::Init(int posXTile, int posYTile, float velocity, TextureManager& manager, const char* textureID, const char* texturePath) {
 	TextureManager textureManager;
 	textureManager_ = textureManager;
 	std::string font = "resources/font/PressStart2P-Regular.ttf";
@@ -45,7 +45,7 @@ void Game::Init(int posXTile, int posYTile, float velocity, float size, TextureM
 	renderer_.setTextureManager(&textureManager_);
 	map_.Load("resources/maps/map1.json", textureManager_, unitManager_, dialogueManager_);
 
-	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, size, manager, TextureData{ textureID, texturePath });
+	player_ = &unitManager_.CreatePlayer(posXTile, posYTile, velocity, manager, TextureData{ textureID, texturePath });
 
 	player_->setMap(&map_);
 	cameraManager_.SetTarget(player_);

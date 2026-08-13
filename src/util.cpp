@@ -19,7 +19,7 @@ namespace Util {
 		return true;
 	}
 
-	bool Contains(json data, std::string name, std::string item, bool warning, bool display) {
+	bool Contains(json& data, std::string name, std::string item, bool warning, bool display) {
 		if (!data.contains(item)) {
 			if (display) {
 				if (!warning) std::cerr << Color::Red << "ERROR JSON" << name << " cannot read " << item << Color::Reset << "\n";
@@ -29,7 +29,7 @@ namespace Util {
 		}
 		return true;
 	}
-	bool Contains(json data, std::string name, std::string item, std::string tree, bool warning, bool display) {
+	bool Contains(json& data, std::string name, std::string item, std::string tree, bool warning, bool display) {
 		if (!data.contains(item)) {
 			if (debug) std::cerr << Color::Red << "ERROR JSON" << name << " cannot read " << tree << item << Color::Reset << "\n";
 			return false;

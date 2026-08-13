@@ -6,8 +6,8 @@
 #include "../ent/Npc.h"
 #include "CameraManager.h"
 
-Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, float size, TextureManager& manager, TextureData textureData) {
-	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, size, manager, textureData);
+Player& UnitManager::CreatePlayer(int posXTile, int posYTile, float velocity, TextureManager& manager, TextureData textureData) {
+	auto player = std::make_unique<Player>(posXTile, posYTile, velocity, manager, textureData);
 	player_ = player.get();
 	player->setUnitManager(this);
 

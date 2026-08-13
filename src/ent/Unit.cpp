@@ -7,13 +7,11 @@ Unit::Unit
 	int posXTile, 
 	int posYTile,
 	float velocity, 
-	float size, 
 	TextureManager& manager, 
 	TextureData textureData) 
 	: posXTile_(posXTile), 
 	posYTile_(posYTile), 
 	velocity_(velocity), 
-	size_(size),
 	targetTileX_(posXTile), 
 	targetTileY_(posYTile), 
 	textureData_(textureData

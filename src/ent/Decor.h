@@ -10,7 +10,6 @@ public:
 	Decor(int posXTile,
 		int posYTile,
 		float velocity,
-		float size,
 		TextureManager& manager,
 		TextureData textureData
 	);
